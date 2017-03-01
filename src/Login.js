@@ -43,11 +43,12 @@ export default class Login extends Component{
   // }
   render(){
     var $scope = this;
+    permissions = ['public_profile','user_friends','user_events','user_likes','rsvp_event'];
     return (
       <View>
         <LoginButton
           publishPermissions={["publish_actions"]}
-          readPermissions={['public_profile','user_friends','user_events','user_likes']}
+          readPermissions={permissions}
           onLoginFinished={
             (error, result) => {
               if (error) {

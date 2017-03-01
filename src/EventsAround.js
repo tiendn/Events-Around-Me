@@ -22,9 +22,11 @@ export default class EventsAround extends React.Component{
     });
     this.state = ({
       dataSource: ds.cloneWithRows(['row1', 'row2']),
-      imagesData : [],
       eventsData : []
     })
+    // this._renderRow = this._renderRow.bind(this);
+    // this._getData = this._getData.bind(this);
+    // this._getEventsAround = this._getEventsAround.bind(this);
   }
   _getData(responseData){
     this.setState({
@@ -32,7 +34,29 @@ export default class EventsAround extends React.Component{
       eventsData : responseData
     })
   }
-  _addRequest(pathEvents){
+  // _getEvents(pathEvents){
+  //   graphRequestManager.addRequest(new GraphRequest(
+  //     pathEvents,
+  //     null,
+  //     function(error: ?Object, responseData: ?Object) {
+  //       if (error) {
+  //         console.log(pathEvents)
+  //         console.log('Error fetching data: ' , error);
+  //       } else {
+  //         console.log('Success fetching ddata: ' , responseData);
+  //         // Return data to state
+  //         return responseData;
+  //         // $scope._getData(responseData);
+  //       }
+  //     },
+  //   )).start();
+  // }
+  _getEventsAround(){
+    var $scope = this;
+    // var pathEvents = '/search?q=Hanoi&type=event';
+    // var pathEvents = 'me/events';
+// &fields=id,name,place,start_time,end_time,cover
+    var pathEvents = 'search?q=Hanoi&type=event&fields=id,name,place,start_time,end_time,rsvp_status,cover';
     graphRequestManager.addRequest(new GraphRequest(
       pathEvents,
       null,
@@ -43,41 +67,33 @@ export default class EventsAround extends React.Component{
         } else {
           console.log('Success fetching ddata: ' , responseData);
           // Return data to state
-          return responseData;
-          // $scope._getData(responseData);
+          $scope._getData(responseData);
         }
       },
     )).start();
-  }
-  _getEventsAround(){
-    var $scope = this;
-    var pathEvents = '/search?q=Hanoi&type=event';
-    // var pathEvents = '1898374417065874?fields=description,photos,images}'
-    console.log(pathEvents)
-    var responseData = this._addRequest(pathEvents)
-    // var pathEvents = 'me/events';
 
   }
-  _getImagesEvent(){
 
-  }
   componentWillMount(){
     this._getEventsAround();
-    this._getImagesEvent();
-    this._renderRow = this._renderRow.bind(this)
 
   }
   _renderRow(rowData){
-    // <TouchableHighlight onClick={ () => alert("Click")}>
+    var cover = Object.assign({},rowData.cover);
+    // console.log(cover.source);
         return(
-          <View>
 
+          <View >
+            <Image
+              style = {{ width: 100 , height: 100}}
+              source={{uri: cover.source}}
+            />
             <Text>
               {rowData.name}
             </Text>
           </View>
+
         )
-    // </TouchableHighlight>
 
   }
 
