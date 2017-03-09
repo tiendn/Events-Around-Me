@@ -10,6 +10,7 @@
   - Get data by key search or topics
     + Key search : Easy
     + Topics -> Get all topic, choose one and search with this topic ??? --> Need to dig more
+    
 ## Action:
   - Search
     + events of me
