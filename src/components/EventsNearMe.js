@@ -1,20 +1,36 @@
-import React, { Component } from 'react';
-import {
-  AppRegistry,
+/* eslint no-console: 0 */
+'use strict';
+
+
+var React = require('react');
+var ReactNative = require('react-native');
+var {
   StyleSheet,
   Text,
-  View
-} from 'react-native';
-import Login from './src/components/Login';
-import EventsAround from './src/components/EventsAround';
+  View,
+} = ReactNative;
 
-export default class EventsAroundMe extends Component {
+exports.framework = 'React';
+exports.title = 'Geolocation';
+exports.description = 'Examples of using the Geolocation API.';
+
+exports.examples = [
+  {
+    title: 'navigator.geolocation',
+    render: function(): React.Element<any> {
+      return <GeolocationExample />;
+    },
+  }
+];
+
+class GeolocationExample extends React.Component {
   state = {
     initialPosition: 'unknown',
     lastPosition: 'unknown',
   };
 
   watchID: ?number = null;
+
   componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -34,14 +50,9 @@ export default class EventsAroundMe extends Component {
     navigator.geolocation.clearWatch(this.watchID);
   }
 
-  constructor(){
-    super();
-  }
   render() {
     return (
       <View>
-
-        <Text> Welcome to the Facebook SDK for React Native! </Text>
         <Text>
           <Text style={styles.title}>Initial position: </Text>
           {this.state.initialPosition}
@@ -50,31 +61,13 @@ export default class EventsAroundMe extends Component {
           <Text style={styles.title}>Current position: </Text>
           {this.state.lastPosition}
         </Text>
-
-        <Login />
-        <EventsAround />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+var styles = StyleSheet.create({
+  title: {
+    fontWeight: '500',
   },
 });
-
-AppRegistry.registerComponent('EventsAroundMe', () => EventsAroundMe);

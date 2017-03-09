@@ -41,6 +41,7 @@
 		8CAEB6F41E4CBA6000D7A28C /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAEB6F01E4CBA6000D7A28C /* FBSDKCoreKit.framework */; };
 		8CAEB6F51E4CBA6000D7A28C /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAEB6F11E4CBA6000D7A28C /* FBSDKLoginKit.framework */; };
 		8CAEB6F61E4CBA6000D7A28C /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAEB6F21E4CBA6000D7A28C /* FBSDKShareKit.framework */; };
+		8CE7EB6F1E6FE35C00BBB8B8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CE7EB6E1E6FE35C00BBB8B8 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -272,6 +273,7 @@
 		8CAEB6F01E4CBA6000D7A28C /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		8CAEB6F11E4CBA6000D7A28C /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		8CAEB6F21E4CBA6000D7A28C /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		8CE7EB6E1E6FE35C00BBB8B8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		C7010857FB8C44B08B4C9A2C /* RCTFBSDK.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTFBSDK.xcodeproj; path = "../node_modules/react-native-fbsdk/ios/RCTFBSDK.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -297,6 +299,7 @@
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				8CAEB6F61E4CBA6000D7A28C /* FBSDKShareKit.framework in Frameworks */,
+				8CE7EB6F1E6FE35C00BBB8B8 /* MapKit.framework in Frameworks */,
 				8CAEB6F31E4CBA6000D7A28C /* Bolts.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
@@ -519,6 +522,7 @@
 		8CAEB6F71E4CBA6600D7A28C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CE7EB6E1E6FE35C00BBB8B8 /* MapKit.framework */,
 				8CAEB6EF1E4CBA6000D7A28C /* Bolts.framework */,
 				8CAEB6F01E4CBA6000D7A28C /* FBSDKCoreKit.framework */,
 				8CAEB6F11E4CBA6000D7A28C /* FBSDKLoginKit.framework */,
@@ -617,6 +621,11 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 9SUQK6864N;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1071,7 +1080,7 @@
 					/Users/admin/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = EventsAroundMe/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1080,6 +1089,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.EventsAroundMe15;
 				PRODUCT_NAME = EventsAroundMe;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1096,7 +1106,7 @@
 					/Users/admin/Documents/FacebookSDK,
 				);
 				INFOPLIST_FILE = EventsAroundMe/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1105,6 +1115,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.EventsAroundMe15;
 				PRODUCT_NAME = EventsAroundMe;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
