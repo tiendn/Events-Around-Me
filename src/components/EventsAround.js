@@ -72,7 +72,14 @@ export default class EventsAround extends React.Component {
         let last = new Date(a.start_time);
         let current = new Date(b.start_time);
         return last - current;
-    })
+    });
+    // If not my events, filter events has expired
+    data = data.filter((item) => {
+      let currentDate = new Date();
+      let endTime = new Date(item.end_time);
+      return item.end_time != undefined ? endTime > currentDate ? item : undefined : undefined;
+    });
+    console.log(data);
     // Set data to state
     this.setState({
       dataSource: this.state.dataSource.cloneWithRows(data),
