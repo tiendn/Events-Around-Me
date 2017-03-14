@@ -38,7 +38,10 @@ Build a slide-menu-views
   - attending
   - cancelled
   - Global-vars
-  
+  - Sort events by time #done
+
+## Redux
+
 ###NOTE: If some events havent has cover or a little information, never show or put it in the end.
 
 

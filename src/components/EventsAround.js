@@ -8,11 +8,11 @@ import {
   TouchableHighlight,
   NavigatorIOS,
   TouchableOpacity,
-  PixelRatio
+  PixelRatio,
+  Share
   // Button
 } from 'react-native';
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
-// import { Container, Content, Card, CardItem, Left, Body, Thumbnail, Button, Icon, Right,Text } from 'native-base';
 const Status = {
   Attending: 'attending',
   Declined: 'declined'
@@ -27,9 +27,9 @@ var keyword = 'Hanoi';
  * Path event send to service and request to Facebook GraphAPI
  */
 var fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count';
-var pathLocationSearch = 'search?q=hanoi&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields='+fields+'&limit=50';
-var pathEventsSearch = 'search?q=' + keyword + '&type=event&fields='+fields+'&limit=50';
-var pathMyEvents = 'me/events?fields='+fields+'&limit=50';
+var pathLocationSearch = 'search?q=hanoi&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
+var pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
+var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
 export default class EventsAround extends React.Component {
   constructor() {
     super();
@@ -40,10 +40,11 @@ export default class EventsAround extends React.Component {
       dataSource: ds.cloneWithRows(['row1', 'row2']),
       eventsData: []
     })
+    // this._shareText = this._shareText.bind(this);
   }
   componentWillMount() {
-    console.log("1")
-    this._getEvents(pathMyEvents);
+    // this._getEvents(pathMyEvents);
+    this._getEvents(pathEventsSearch);
   }
   /**
    * Change status in event
@@ -66,8 +67,15 @@ export default class EventsAround extends React.Component {
    * @param {*} responseData 
    */
   _getData(error, responseData) {
+    // Sort data by near time
+    var data = responseData.data.sort((a,b) =>{
+        let last = new Date(a.start_time);
+        let current = new Date(b.start_time);
+        return last - current;
+    })
+    // Set data to state
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(responseData.data),
+      dataSource: this.state.dataSource.cloneWithRows(data),
       eventsData: responseData
     })
   }
@@ -81,62 +89,6 @@ export default class EventsAround extends React.Component {
       console.log('Success fetching ddata: ', responseData);
     });
   }
-
-  /**
-   * Render result
-   * @param {*} rowData 
-   */
-  _renderRow(rowData) {
-    if (rowData !== undefined && rowData !== null) {
-      // Cover
-      var cover = Object.assign({}, rowData.cover);
-      // Datetime
-      var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' };
-      options.timeZone = 'UTC';
-      options.timeZoneName = 'short';
-      let start_time = "";
-      if (rowData.start_time !== "")
-        start_time = new Date(rowData.start_time).toLocaleDateString('en-US', options).slice(0, -3).toUpperCase();
-      // Place
-      var place = rowData.place == undefined ? '' : rowData.place.name; 
-      // Category
-      // console.log(rowData.category)
-      var category = rowData.category == undefined ? '' : '#'+rowData.category
-      return (
-        <View style={styles.card}>
-          <TouchableOpacity >
-            <Image
-              style={styles.image}
-              source={{ uri: cover.source }}
-              defaultSource={require('.././assets/img/not_available.png')}
-            />
-            
-
-            <View style={styles.cardContent}>
-              <Text style = {styles.attending}>
-                ##{rowData.attending_count}
-              </Text>
-              <Text style={[styles.startTime, styles.text]}>
-                {start_time}
-              </Text>
-              <Text numberOfLines={1} style={[styles.title , styles.text]} >
-                {rowData.name}
-              </Text>
-              <Text style={ [styles.place , styles.text]} >
-                {place}
-              </Text>
-            </View>
-            <View style = {styles.cardFooter}>
-              <Text>
-                {category}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      )
-    }
-
-  }
   /**
    * Push navigation to new detail page
    */
@@ -146,6 +98,93 @@ export default class EventsAround extends React.Component {
       title: 'Genius',
     });
   }
+  /**
+   * Render result
+   * @param {*} rowData 
+   */
+  _renderRow(rowData) {
+    if (rowData !== undefined && rowData !== null) {
+      // Cover
+      var cover = Object.assign({}, rowData.cover);
+      // Datetime
+      var options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+       hour: 'numeric', minute: 'numeric' };
+      options.timeZone = 'UTC';
+      options.timeZoneName = 'short';
+      if (rowData.start_time !== "")
+        start_time = new Date(rowData.start_time).toLocaleDateString('en-US', options)
+        .slice(0, -3).toUpperCase();
+      // Render
+      return (
+        <View style={styles.card}>
+          <TouchableOpacity >
+            <Image
+              style={styles.image}
+              source={{ uri: cover.source }}
+              defaultSource={require('.././assets/img/not_available.png')}
+            />
+            <View style={styles.cardContent}>
+              {/*<Text style={styles.attending}>
+                {rowData.attending_count}
+              </Text>*/}
+              <Text style={[styles.startTime, styles.text]}>
+                {start_time}
+              </Text>
+              <Text numberOfLines={1} style={[styles.title, styles.text]} >
+                {rowData.name}
+              </Text>
+              <Text style={[styles.place, styles.text]} >
+                {rowData.place == undefined ? '' : rowData.place.name}
+              </Text>
+            </View>
+            <View style={styles.cardFooter}>
+
+              <Text style = {styles.textFooter}>
+                {rowData.attending_count == undefined ? '' : '#' + rowData.attending_count}
+              </Text>
+              <Text>
+                {rowData.category == undefined ? '' : '#' + rowData.category}
+              </Text>
+
+              <TouchableOpacity 
+                style={[styles.share,styles.button]} 
+                onPress={() => {this._shareText(rowData.name)}}
+              >
+                {/*https://facebook.github.io/react-native/docs/share.html*/}
+                <Image
+                  style={styles.icon}
+                  source={require('.././assets/img/shareios.png')}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.interested,styles.button]}>
+                <Image
+                  style={styles.icon}
+                  source={require('.././assets/img/likeios.png')}
+                />
+              </TouchableOpacity>
+              
+            </View>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+  _shareText(name) {
+    Share.share({
+      message: 'What do you think ?',
+      url: 'http://facebook.github.io/react-native/',
+      title: name
+    }, {
+      dialogTitle: 'Share React Native website',
+      excludedActivityTypes: [
+        'com.apple.UIKit.activity.PostToTwitter'
+      ],
+      tintColor: 'green'
+    })
+    .then(() => {console.log("Share successful")} )
+    .catch((error) => {console.log("Share successful")});
+  }
+  
   /**
    * Render
    */
@@ -160,18 +199,24 @@ export default class EventsAround extends React.Component {
   }
 }
 const styles = StyleSheet.create({
-  attending : {
-    position: 'absolute',
-    top : 20,
-    right : 50,
-    backgroundColor : '#4080ff',
-    // flex: 0.6
-  },
+  // attending: {
+  //   position: 'absolute',
+  //   top:10,
+  //   right: 10,
+  //   backgroundColor: '#4080ff',
+  //   zIndex : 99,
+
+  //   borderRadius : 20 
+  //   // flex: 0.6
+  // },
   body: {
     backgroundColor: '#dddddd'
   },
-  text: {
-    paddingVertical: 2,
+  button :{
+    borderLeftWidth : 1,
+    borderLeftColor : '#ccc',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   card: {
     marginVertical: 15,
@@ -190,22 +235,32 @@ const styles = StyleSheet.create({
 
   },
   cardContent: {
-    position : 'relative',
+    position: 'relative',
     borderTopWidth: 1,
     borderTopColor: '#ccc',
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderBottomColor : '#ccc',
+    borderBottomColor: '#ccc',
   },
-  cardFooter :{
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+  cardFooter: {
+    
+    flexDirection: 'row'
   },
-  image : {
-    flex: 1, 
+  icon : {
+    height: 32,
+    width: 32
+  },
+  interested :{
+    flex: 1
+  },
+  image: {
+    flex: 1,
     height: 140,
-    resizeMode : 'stretch' 
+    resizeMode: 'stretch'
+  },
+  share : {
+    flex: 1
   },
   startTime: {
     fontSize: 14
@@ -213,6 +268,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "bold"
+  },
+  text: {
+    paddingVertical: 2,
+  },
+  textFooter: {
+    flex: 4,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
   },
   place: {
     fontSize: 14
