@@ -5,5 +5,11 @@
     },
     "exclude": [
         "node_modules"
-    ]
+    ],
+    "typeAcquisition": {
+        "include": [
+            "lodash"
+        ]
+    },
+   
 }

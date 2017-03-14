@@ -25,7 +25,12 @@ export default class EventDetail extends Component{
           <Text>Tap me to go back</Text>
         </TouchableHighlight>
       </View>
-
+  {/*<Button
+          onPress = {() => this.changeRSVPStatus(rowData.id,Status.Attending)}
+          title = "Attending"
+          color ="#841584"
+          accessbilityLabel = " Attending this event"
+        />*/}
       /**
        *  EventDetail
         Include: Image , title, start, end, place, description,

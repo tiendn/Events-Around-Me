@@ -4,6 +4,7 @@ const {
   GraphRequestManager,
 } = FBSDK;
 const graphRequestManager = new GraphRequestManager();
+
 function getFbRequest(path,callback){
   graphRequestManager.addRequest(new GraphRequest(
     path,
