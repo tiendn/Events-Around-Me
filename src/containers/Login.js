@@ -6,9 +6,9 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native'
-import GlobalVars from '../commons/global-vars.js';
-import { LoginManager } from 'react-native-fbsdk'
-import EventsAround from './EventsAround';
+import { LoginManager } from 'react-native-fbsdk';
+const anotherStyles = require('../../style/Styles');
+
 // const FBSDK = require('react-native-fbsdk');
 // const {
 //   LoginButton,
@@ -63,7 +63,7 @@ export default class Login extends Component {
           onPress={this._handleFacebookLogin}
         >
           {!this.state.isLogin &&
-            <Text style={styles.loginFbText}>
+            <Text style={[styles.loginFbText,anotherStyles.loginFbText] }>
               Login
           </Text>}
           {this.state.isLogin &&
@@ -122,3 +122,4 @@ const styles = StyleSheet.create({
   }
 
 });
+// loginFbText 

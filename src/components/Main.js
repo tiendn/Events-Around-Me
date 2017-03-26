@@ -5,9 +5,8 @@ import {
 } from 'react-native';
 import { Container, Content, Tab, Tabs, Header } from 'native-base';
 
-import Login from './Login';
+import Login from './login/Login';
 import EventsAround from './EventsAround';
-// import SwipeMenu from './SwipeMenu';
 export default class Main extends Component {
   state = {
     initialPosition: 'unknown',
@@ -42,25 +41,19 @@ export default class Main extends Component {
             <Container>
             <Header hasTabs />
             <Tabs>
-                <Tab heading="Events around">
+                <Tab heading="Next Events">
                     <EventsAround />
                 </Tab>
+                
                 <Tab heading="Login">
                     <Login />
                 </Tab>
                 
             </Tabs>
-            {/*<Text>
-          <Text >Initial position: </Text>
-          {this.state.initialPosition}
-        </Text>
-        <Text>
-          <Text >Current position: </Text>
-          {this.state.lastPosition}
-        </Text>*/}
             </Container>
         );
   }
+  
   /*render() {
     return (
       <View style={{marginTop: 70, alignSelf: 'center'}} >

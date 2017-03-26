@@ -17,6 +17,7 @@ Build a slide-menu-views
     + My events
     + Recommend : DeckSwiper(Native-base)
     + Events near me
+    + Popular
     + Search: Options
       + me
       + location
@@ -26,7 +27,7 @@ Build a slide-menu-views
     + Notification
       + Alarm
       + Share status
-    + Settings
+    + Settings : Sort by time / number_attending / (Category) ??
     
 ## Action:
   - Search
@@ -39,9 +40,12 @@ Build a slide-menu-views
   - cancelled
   - Global-vars
   - Sort events by time #done
-
+  - Offline mode
+  - Check offline, splash reload,wait
 ## Redux
 
 ###NOTE: If some events havent has cover or a little information, never show or put it in the end.
 
+
+###Note: Drop fetchData in a file and send param prop rowData to render Function name Events
 
