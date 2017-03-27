@@ -45,6 +45,11 @@ export class Events extends React.Component {
         startTime : rowData.start_time,
         place : rowData.place
       }
+      const footer = {
+        name : rowData.name,
+        attending : rowData.attending_count,
+        category: rowData.category
+      }
       // Render
       return (
         <View style={styles.card} key={rowData.id} >
@@ -53,10 +58,10 @@ export class Events extends React.Component {
             <Image
               style={styles.image}
               source={{ uri: cover.source, cache: 'only-if-cached' }}
-              defaultSource={require('./img/no_available.png')}
+              defaultSource={require('./img/not_available.png')}
             />
             <CardContent rowData = {content} />
-            <CardFooter rowData = {rowData} />
+            <CardFooter rowData = {footer} />
           </TouchableOpacity>
         </View>
       )

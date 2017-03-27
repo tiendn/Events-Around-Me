@@ -5,7 +5,7 @@ import React from 'react';
  * @param {*} rowData 
  */
 
-export default CardFooter = (rowData) => {
+export default CardFooter = (footer) => {
   function shareText(name){
     Share.share({
       message: 'What do you think ?',
@@ -21,29 +21,31 @@ export default CardFooter = (rowData) => {
       .then(() => { console.log("Share successful") })
       .catch((error) => { console.log("Share successful") });
   };
+  console.log(footer)
+  const data = footer.rowData;
   return(
   <View style={styles.cardFooter}>
     <Text style={styles.textFooter} numberOfLines={1}>
-      {rowData.attending_count == undefined ? '' : '#' + rowData.attending_count + ' '}
+      {data.attending == undefined ? '' : '#' + data.attending + ' '}
       {/*</Text>
               <Text>*/}
-      {rowData.category == undefined ? '' : '#' + rowData.category}
+      {data.category == undefined ? '' : '#' + data.category}
     </Text>
 
     <TouchableOpacity
       style={[styles.share, styles.button]}
-      onPress={() => { this.shareText(rowData.name) }}
+      onPress={() => { shareText(data.name) }}
     >
       {/*https://facebook.github.io/react-native/docs/share.html*/}
       <Image
         style={styles.icon}
-        source={require('./img/share.png')}
+        source={require('./img/share-icon.png')}
       />
     </TouchableOpacity>
     <TouchableOpacity style={[styles.interested, styles.button]}>
       <Image
         style={styles.icon}
-        source={require('./img/interested.png')}
+        source={require('./img/interest-icon.png')}
       />
     </TouchableOpacity>
   </View>
