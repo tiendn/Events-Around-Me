@@ -1,4 +1,28 @@
-{
+{ 
+  "rules": {
+        "no-underscore-dangle": "off",
+        // "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "eol-last": 0,
+        "object-curly-spacing": 0,
+        "space-before-blocks": 0,
+        // "react-native/no-unused-styles": 2,
+        // "react-native/split-platform-components": 2,
+        "react-native/no-inline-styles": 0,
+        "react-native/no-color-literals": 0,
+        "react/require-default-props": 0,
+        "no-trailing-spaces": 0,
+        "comma-dangle": 0,
+        "no-plusplus": 0,
+        // Monkey rules
+        "keyword-spacing" : 0,
+        "semi" :0,
+        "indent" : 0,
+        "react/jsx-indent": 0,
+        "react/jsx-indent-props": 0,
+        "quotes": 0,
+        "prefer-template" : 0,
+        "import/newline-after-import" : 0
+  },
   "parser": "babel-eslint",
   "env": {
     "browser": true,

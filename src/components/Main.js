@@ -5,8 +5,8 @@ import {
 } from 'react-native';
 import { Container, Content, Tab, Tabs, Header } from 'native-base';
 
-import Login from './login/Login';
-import EventsAround from './EventsAround';
+import Login from '../containers/Login';
+import EventsAround from '../containers/EventsAround';
 export default class Main extends Component {
   state = {
     initialPosition: 'unknown',

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View,Text} from 'react-native'
+import { View, Text } from 'react-native'
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
-import { Events } from './events-around/Events';
+import { Events } from '../components/Events';
 const Status = {
   Attending: 'attending',
   Declined: 'declined'
@@ -20,6 +20,10 @@ var fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,atten
 var pathLocationSearch = 'search?q=hanoi&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
 var pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
 var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
+
+/**
+ * 
+ */
 export default class EventsAround extends React.Component {
   constructor() {
     super();
@@ -54,16 +58,18 @@ export default class EventsAround extends React.Component {
    */
   _getData(error, responseData) {
     // Sort data by near time
-    var data = responseData.data.sort((a,b) => {
-        let last = new Date(a.start_time);
-        let current = new Date(b.start_time);
-        return last - current;
+    var data = responseData.data.sort((a, b) => {
+      let last = new Date(a.start_time);
+      let current = new Date(b.start_time);
+      return last - current;
     });
     // If not my events, filter events has expired
     data = data.filter((item) => {
       let currentDate = new Date();
       let endTime = new Date(item.end_time);
-      return item.end_time != undefined ? endTime > currentDate ? item : undefined : undefined;
+      let startTime = new Date(item.start_time);
+      console.log(currentDate > startTime);
+      return  currentDate < startTime ? item.end_time != undefined ? endTime > currentDate ? item : undefined : undefined : undefined;
     });
 
     // Set data to state
@@ -73,7 +79,7 @@ export default class EventsAround extends React.Component {
     })
     console.log(this.state.eventsData);
   }
-  
+
   /**
    * Get GraphAPI from service
    * @param {*} path 
@@ -93,26 +99,22 @@ export default class EventsAround extends React.Component {
       title: 'Genius',
     });
   }
-  
+
   /**
    * Render
    */
   render() {
-    return (
-      <View>
-        <Events />
-        <Text style={{marginTop : 200}}>  
-          ]wwerwerwe
-          </Text> 
-       </View>
-    )
+    // console.log(this.state.eventsData.length != 0);
+    if (this.state.eventsData.length !== 0) {
+      return (
+        <Events eventsData={this.state.eventsData} />
+      )
+    } else {
+      return (
+        <Text style={{ marginTop: 100 }}> Nothing </Text>
+      )
+    }
+
+
   }
-  /*render() {
-    console.log(this.state.eventsData)
-    return (
-      <View>
-        <Text> ..ewr.we.rwe.r.wer.we </Text>
-        </View>
-    )
-  }*/
 }

@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import { LoginManager } from 'react-native-fbsdk';
-const anotherStyles = require('../../style/Styles');
+const anotherStyles = require('../style/Styles');
 
 // const FBSDK = require('react-native-fbsdk');
 // const {
