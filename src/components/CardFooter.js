@@ -11,8 +11,8 @@ const Status = {
 }
 
 // let isInterested = false;
-export default CardFooter = (footer) => {
-  const data = footer.rowData;
+export default CardFooter = (rowData) => {
+  const data = rowData;
   
   /**
    * Change status in event
@@ -48,7 +48,7 @@ export default CardFooter = (footer) => {
   return(
   <View style={styles.cardFooter}>
     <Text style={styles.textFooter} numberOfLines={1}>
-      {data.attending == undefined ? '' : '#' + data.attending + ' '}
+      {data.attending_count == undefined ? '' : '#' + data.attending_count + ' '}
       {/*</Text>
               <Text>*/}
       {data.category == undefined ? '' : '#' + data.category}

@@ -23,7 +23,7 @@ export class Events extends React.Component {
   /**
    * 
    */
-  componentWillMount(){
+  componentWillMount() {
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2
     });
@@ -33,7 +33,7 @@ export class Events extends React.Component {
       eventsData: eventsData
     })
   }
-  onEventClick(event,rowData){
+  onEventClick(event, rowData) {
     event.preventDefault();
     console.log(rowData.name)
     this.props.navigator.push({
@@ -44,6 +44,7 @@ export class Events extends React.Component {
     // console.log(id);
   }
   // 
+  
   /**
    * Render result
    * @param {*} rowData 
@@ -52,35 +53,24 @@ export class Events extends React.Component {
     if (rowData !== undefined && rowData !== null) {
       // Cover
       const cover = Object.assign({}, rowData.cover);
-      const content = {
-        name : rowData.name,
-        startTime : rowData.start_time,
-        place : rowData.place
-      }
-      const footer = {
-        id: rowData.id,
-        name : rowData.name,
-        attending : rowData.attending_count,
-        category: rowData.category
-      }
       // Render
       return (
         <View style={styles.card} key={rowData.id} >
-          <TouchableOpacity onPress = {(event) => this.onEventClick(event,rowData)} >
+          <TouchableOpacity onPress={(event) => this.onEventClick(event, rowData)} activeOpacity = {0.7} >
             {/*Image*/}
             <Image
               style={styles.image}
               source={{ uri: cover.source, cache: 'only-if-cached' }}
               defaultSource={require('./img/not-available.png')}
             />
-            <CardContent rowData = {content} />
-            <CardFooter rowData = {footer} />
+            <CardContent {...rowData} />
+            <CardFooter {...rowData} />
           </TouchableOpacity>
         </View>
       )
     }
   }
-  
+
   render() {
     if (this.state.dataSource.length !== 0) {
       return (

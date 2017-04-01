@@ -1,23 +1,12 @@
 import { Text, View, StyleSheet } from 'react-native';
 import React from 'react';
-export default CardContent = (content) => {
+export default CardContent = (rowData) => {
   // Datetime
-  const data = content.rowData;
-  let start_time;
-  const options = {
-    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
-    hour: 'numeric', minute: 'numeric'
-  };
-  options.timeZone = 'UTC';
-  options.timeZoneName = 'short';
-  if (data.startTime !== "")
-    start_time = new Date(data.startTime).toLocaleDateString('en-US', options)
-      .slice(0, -3).toUpperCase();
-      
+  const data = rowData;
   return (
     <View style={styles.cardContent}>
       <Text style={[styles.startTime, styles.text]}>
-        {start_time}
+        {data.start_time}
     </Text>
       <Text numberOfLines={1} style={[styles.title, styles.text]} >
         {data.name}
