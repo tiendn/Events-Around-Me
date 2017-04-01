@@ -49,8 +49,6 @@ export default CardFooter = (rowData) => {
   <View style={styles.cardFooter}>
     <Text style={styles.textFooter} numberOfLines={1}>
       {data.attending_count == undefined ? '' : '#' + data.attending_count + ' '}
-      {/*</Text>
-              <Text>*/}
       {data.category == undefined ? '' : '#' + data.category}
     </Text>
 

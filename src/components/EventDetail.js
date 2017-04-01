@@ -135,7 +135,7 @@ export default class EventDetail extends Component {
           </View>
         </ScrollView>
       </View>
-
+//  Thieesu cho hien thi cho phep tuong tac de goi tuong thay doi trang thai rsvp
       /**
        *  EventDetail
         Include: Image , title, start, end, place, description,
