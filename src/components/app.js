@@ -54,7 +54,7 @@ export default class App extends Component {
         initialRoute={{
           component: Tabs,
           title: 'Events Around Me',
-          passProps: { myProp: 'foo' },
+          passProps: { ...this.refs },
           rightButtonTitle: 'Add',
           onRightButtonPress: () => this._handleNavigationRequest(),
         }}

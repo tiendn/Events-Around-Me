@@ -38,10 +38,12 @@ Build a slide-menu-views
     + events like google search
   - attending
   - cancelled
-  - Global-vars
+  - Global-vars: Redux
   - Sort events by time #done
   - Offline mode
   - Check offline, splash reload,wait
+  - UX: When clicked interested event --> change background color icon and accept click again to 
+    declined
 ## Redux
 
 ###NOTE: If some events havent has cover or a little information, never show or put it in the end.

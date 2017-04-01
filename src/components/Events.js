@@ -13,10 +13,11 @@ import {
 } from 'react-native';
 import CardContent from './CardContent';
 import CardFooter from './CardFooter';
-
+import EventDetail from './EventDetail';
 export class Events extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.onEventClick = this.onEventClick.bind(this);
   }
   /**
@@ -32,8 +33,14 @@ export class Events extends React.Component {
       eventsData: eventsData
     })
   }
-  onEventClick(event,{id}){
+  onEventClick(event,rowData){
     event.preventDefault();
+    console.log(rowData.name)
+    this.props.navigator.push({
+      component: EventDetail,
+      title: rowData.name,
+      passProps: rowData,
+    })
     // console.log(id);
   }
   // 

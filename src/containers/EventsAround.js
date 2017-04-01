@@ -31,6 +31,7 @@ var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
 export default class EventsAround extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
     this.state = ({
       eventsData: [],
       type: this.props.type
@@ -119,7 +120,7 @@ export default class EventsAround extends React.Component {
     // console.log(this.state.eventsData.length != 0);
     if (this.state.eventsData.length !== 0) {
       return (
-        <Events eventsData={this.state.eventsData} />
+        <Events eventsData={this.state.eventsData} {...this.props} />
       )
     } else {
       return (

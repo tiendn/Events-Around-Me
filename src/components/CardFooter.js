@@ -10,6 +10,7 @@ const Status = {
   Declined: 'declined'
 }
 
+// let isInterested = false;
 export default CardFooter = (footer) => {
   const data = footer.rowData;
   
@@ -25,6 +26,7 @@ export default CardFooter = (footer) => {
         console.log('Error fetching data: ', error);
       } else {
         console.log('Success change RSVP status : ', responseData);
+        // isInterested = true;
       }
     });
   }
@@ -67,8 +69,8 @@ export default CardFooter = (footer) => {
       onPress={ () => onInterest(data.id,Status.Attending) }
       >
       <Image
-        style={styles.icon}
-        source={require('./img/interest-ic.png')}
+        style={[styles.icon,styles.iconInterested]}
+        source={require('./img/interested.png')}
       />
     </TouchableOpacity>
   </View>
@@ -110,7 +112,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     height: 32,
-    width: 32
+    width: 32,
+  },
+  iconInterested:{
+    // backgroundColor : isInterested == true ? 'red' : 'white' 
+    
   },
   interested: {
     flex: 1

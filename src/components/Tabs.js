@@ -25,12 +25,17 @@ const TYPE_EVENT = {
   MyEvent: 1,
   Popular: 2
 }
-
+const SELECTED_TAB ={
+  IEvents : 'IEvents',
+  Popular : 'Popular',
+  Settings : 'Settings'
+}
 export default class Tabs extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log(props)
     this.state = ({
-      selectedTab: 'redTab',
+      selectedTab: SELECTED_TAB.Popular,
       notifCount: 0,
       presses: 0,
     })
@@ -54,23 +59,22 @@ export default class Tabs extends Component {
         <TabBarIOS.Item
           title="News Feed"
           icon={{ uri: base64Icon, scale: 3 }}
-          selected={this.state.selectedTab === 'blueTab'}
-          
+          selected={this.state.selectedTab === SELECTED_TAB.Popular}
           onPress={() => {
             this.setState({
-              selectedTab: 'blueTab',
+            selectedTab: SELECTED_TAB.Popular,
             });
           }}>
-          <EventsAround type={TYPE_EVENT.Popular} style = {{marginTop: 100}}/>
+          <EventsAround type={TYPE_EVENT.Popular} {...this.props}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           systemIcon="history"
           badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
           badgeColor="red"
-          selected={this.state.selectedTab === 'redTab'}
+          selected={this.state.selectedTab === SELECTED_TAB.IEvents}
           onPress={() => {
             this.setState({
-              selectedTab: 'redTab',
+              selectedTab: SELECTED_TAB.IEvents,
               notifCount: this.state.notifCount + 1,
             });
           }}>
@@ -79,10 +83,10 @@ export default class Tabs extends Component {
         <TabBarIOS.Item
           renderAsOriginal
           title="Settings"
-          selected={this.state.selectedTab === 'greenTab'}
+          selected={this.state.selectedTab === SELECTED_TAB.Settings}
           onPress={() => {
             this.setState({
-              selectedTab: 'greenTab',
+              selectedTab: SELECTED_TAB.Settings,
               presses: this.state.presses + 1
             });
           }}>
