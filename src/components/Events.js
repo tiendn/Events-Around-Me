@@ -17,7 +17,7 @@ import CardFooter from './CardFooter';
 export class Events extends React.Component {
   constructor(props) {
     super(props);
-    // this.openDetail = this.openDetail.bind(this);
+    this.onEventClick = this.onEventClick.bind(this);
   }
   /**
    * 
@@ -32,9 +32,9 @@ export class Events extends React.Component {
       eventsData: eventsData
     })
   }
-  openDetail(event,{id}){
+  onEventClick(event,{id}){
     event.preventDefault();
-    console.log(id);
+    // console.log(id);
   }
   // 
   /**
@@ -51,6 +51,7 @@ export class Events extends React.Component {
         place : rowData.place
       }
       const footer = {
+        id: rowData.id,
         name : rowData.name,
         attending : rowData.attending_count,
         category: rowData.category
@@ -58,12 +59,12 @@ export class Events extends React.Component {
       // Render
       return (
         <View style={styles.card} key={rowData.id} >
-          <TouchableOpacity onPress = {(event) => this.openDetail(event,rowData)} >
+          <TouchableOpacity onPress = {(event) => this.onEventClick(event,rowData)} >
             {/*Image*/}
             <Image
               style={styles.image}
               source={{ uri: cover.source, cache: 'only-if-cached' }}
-              defaultSource={require('./img/not_available.png')}
+              defaultSource={require('./img/not-available.png')}
             />
             <CardContent rowData = {content} />
             <CardFooter rowData = {footer} />
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   card: {
-    marginVertical: 15,
+    marginVertical: 10,
     marginHorizontal: 6,
     flex: 1,
     borderRadius: 2,

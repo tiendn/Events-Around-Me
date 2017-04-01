@@ -10,30 +10,14 @@ import {
 // import Login from './src/components/Login';
 // import EventsAround from './src/components/EventsAround';
 // import GlobalVars from './src/commons/global-vars';
-import Main from './src/components/Main'
+import App from './src/components/app'
 
 export default class EventsAroundMe extends Component {
-  _handleNavigationRequest() {
-    this.refs.nav.push({
-      component: Main,
-      title: 'Genius',
-      passProps: { myProp: 'genius' },
-    });
-  }
+ 
 
   render() {
     return (
-      <NavigatorIOS
-        ref='nav'
-        initialRoute={{
-          component: Main,
-          title: 'Events Around Me',
-          passProps: { myProp: 'foo' },
-          rightButtonTitle: 'Add',
-          onRightButtonPress: () => this._handleNavigationRequest(),
-        }}
-        style={{flex: 1}}
-      />
+      <App />
     );
   }
 }

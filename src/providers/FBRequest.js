@@ -3,10 +3,9 @@ const {
   GraphRequest,
   GraphRequestManager,
 } = FBSDK;
-const graphRequestManager = new GraphRequestManager();
 
 function getFbRequest(path,callback){
-  graphRequestManager.addRequest(new GraphRequest(
+  new GraphRequestManager().addRequest(new GraphRequest(
     path,
     null,
     function(error: ?Object, responseData: ?Object) {
@@ -16,9 +15,9 @@ function getFbRequest(path,callback){
   )).start();
 }
 function postFbRequest(path,callback){
-  graphRequestManager.addRequest(new GraphRequest(
+  new GraphRequestManager().addRequest(new GraphRequest(
     path,
-    "POST",
+    { httpMethod: 'POST'},
     function(error: ?Object, responseData: ?Object) {
       if (typeof callback == "function")
         callback(error,responseData)

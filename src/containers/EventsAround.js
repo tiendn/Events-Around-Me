@@ -9,10 +9,7 @@ const TYPE_EVENT = {
   MyEvent: 1,
   Popular: 2
 }
-const Status = {
-  Attending: 'attending',
-  Declined: 'declined'
-}
+
 /**
  * Config 
  */
@@ -34,22 +31,18 @@ var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
 export default class EventsAround extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.type);
     this.state = ({
       eventsData: [],
       type: this.props.type
     })
-    console.log(this.state.type)
     // this._shareText = this._shareText.bind(this);
   }
   componentWillMount() {
     switch (this.state.type) {
       case TYPE_EVENT.Popular:
-        console.log(pathEventsSearch)
         this._getEvents(pathEventsSearch);
         break;
       case TYPE_EVENT.MyEvent:
-        console.log("My event")
         this._getEvents(pathMyEvents);
         break;
       default:
@@ -57,21 +50,7 @@ export default class EventsAround extends React.Component {
     }
 
   }
-  /**
-   * Change status in event
-   * @param {*} eventId 
-   * @param {*} param 
-   */
-  changeRSVPStatus(eventId, param) {
-    let path = eventId + param;
-    postFbRequest(path, (error, responseData) => {
-      if (error) {
-        console.log('Error fetching data: ', error);
-      } else {
-        console.log('Success fetching ddata: ', responseData);
-      }
-    });
-  }
+  
   /**
    * Store data
    * @param {*} error 
@@ -108,7 +87,7 @@ export default class EventsAround extends React.Component {
       // dataSource: this.state.dataSource.cloneWithRows(data),
       eventsData: data
     })
-    console.log(this.state.eventsData);
+    // console.log(this.state.eventsData);
   }
 
   /**
@@ -117,7 +96,7 @@ export default class EventsAround extends React.Component {
    */
   _getEvents(path) {
     getFbRequest(path, (error, responseData) => {
-      console.log('Success fetching ddata: ', responseData);
+      // console.log('Success fetching ddata: ', responseData);
       if (error === null)
         this._getData(responseData);
       

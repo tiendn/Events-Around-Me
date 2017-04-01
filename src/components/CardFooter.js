@@ -1,11 +1,33 @@
 import {Text,View,StyleSheet,Share,TouchableOpacity,Image} from 'react-native';
 import React from 'react';
+import {  postFbRequest } from '../providers/FBRequest.js';
 /**
  * 
  * @param {*} rowData 
  */
+const Status = {
+  Attending: 'attending',
+  Declined: 'declined'
+}
 
 export default CardFooter = (footer) => {
+  const data = footer.rowData;
+  
+  /**
+   * Change status in event
+   * @param {*} eventId 
+   * @param {*} param 
+   */
+  function onInterest(eventId, param){
+    let path = eventId +'/'+ param;
+    postFbRequest(path, (error, responseData) => {
+      if (error) {
+        console.log('Error fetching data: ', error);
+      } else {
+        console.log('Success change RSVP status : ', responseData);
+      }
+    });
+  }
   function shareText(name){
     Share.share({
       message: 'What do you think ?',
@@ -21,7 +43,6 @@ export default CardFooter = (footer) => {
       .then(() => { console.log("Share successful") })
       .catch((error) => { console.log("Share successful") });
   };
-  const data = footer.rowData;
   return(
   <View style={styles.cardFooter}>
     <Text style={styles.textFooter} numberOfLines={1}>
@@ -38,13 +59,16 @@ export default CardFooter = (footer) => {
       {/*https://facebook.github.io/react-native/docs/share.html*/}
       <Image
         style={styles.icon}
-        source={require('./img/share-icon.png')}
+        source={require('./img/share-ic.png')}
       />
     </TouchableOpacity>
-    <TouchableOpacity style={[styles.interested, styles.button]}>
+    <TouchableOpacity 
+      style={[styles.interested, styles.button]}
+      onPress={ () => onInterest(data.id,Status.Attending) }
+      >
       <Image
         style={styles.icon}
-        source={require('./img/interest-icon.png')}
+        source={require('./img/interest-ic.png')}
       />
     </TouchableOpacity>
   </View>
