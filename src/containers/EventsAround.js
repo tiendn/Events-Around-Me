@@ -2,6 +2,13 @@ import React from 'react';
 import { View, Text } from 'react-native'
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
 import { Events } from '../components/Events';
+/**
+ * 
+ */
+const TYPE_EVENT = {
+  MyEvent: 1,
+  Popular: 2
+}
 const Status = {
   Attending: 'attending',
   Declined: 'declined'
@@ -25,16 +32,30 @@ var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
  * 
  */
 export default class EventsAround extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    console.log(this.props.type);
     this.state = ({
-      eventsData: []
+      eventsData: [],
+      type: this.props.type
     })
+    console.log(this.state.type)
     // this._shareText = this._shareText.bind(this);
   }
   componentWillMount() {
-    // this._getEvents(pathMyEvents);
-    this._getEvents(pathEventsSearch);
+    switch (this.state.type) {
+      case TYPE_EVENT.Popular:
+        console.log(pathEventsSearch)
+        this._getEvents(pathEventsSearch);
+        break;
+      case TYPE_EVENT.MyEvent:
+        console.log("My event")
+        this._getEvents(pathMyEvents);
+        break;
+      default:
+        this._getEvents(pathEventsSearch);
+    }
+
   }
   /**
    * Change status in event
@@ -56,22 +77,32 @@ export default class EventsAround extends React.Component {
    * @param {*} error 
    * @param {*} responseData 
    */
-  _getData(error, responseData) {
-    // Sort data by near time
-    var data = responseData.data.sort((a, b) => {
-      let last = new Date(a.start_time);
-      let current = new Date(b.start_time);
-      return last - current;
-    });
-    // If not my events, filter events has expired
-    data = data.filter((item) => {
-      let currentDate = new Date();
-      let endTime = new Date(item.end_time);
-      let startTime = new Date(item.start_time);
-      console.log(currentDate > startTime);
-      return  currentDate < startTime ? item.end_time != undefined ? endTime > currentDate ? item : undefined : undefined : undefined;
-    });
+  _getData(responseData) {
+    
 
+    // If not my events, filter events has expired
+    if (this.state.type != TYPE_EVENT.MyEvent) {
+      // Sort data by near time
+      var data = responseData.data.sort((a, b) => {
+        let last = new Date(a.start_time);
+        let current = new Date(b.start_time);
+        return last - current;
+      });
+      data = data.filter((item) => {
+        let currentDate = new Date();
+        let endTime = new Date(item.end_time);
+        let startTime = new Date(item.start_time);
+        return currentDate < startTime ? item.end_time != undefined ? endTime > currentDate ? item : undefined : undefined : undefined;
+      });
+    }
+    else if (this.state.type == TYPE_EVENT.MyEvent){
+      // Sort data by newest time
+      var data = responseData.data.sort((a, b) => {
+        let last = new Date(a.start_time);
+        let current = new Date(b.start_time);
+        return current - last;
+      });
+    }
     // Set data to state
     this.setState({
       // dataSource: this.state.dataSource.cloneWithRows(data),
@@ -86,8 +117,10 @@ export default class EventsAround extends React.Component {
    */
   _getEvents(path) {
     getFbRequest(path, (error, responseData) => {
-      this._getData(error, responseData);
-      // console.log('Success fetching ddata: ', responseData);
+      console.log('Success fetching ddata: ', responseData);
+      if (error === null)
+        this._getData(responseData);
+      
     });
   }
   /**

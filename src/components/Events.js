@@ -17,6 +17,7 @@ import CardFooter from './CardFooter';
 export class Events extends React.Component {
   constructor(props) {
     super(props);
+    // this.openDetail = this.openDetail.bind(this);
   }
   /**
    * 
@@ -30,6 +31,10 @@ export class Events extends React.Component {
       dataSource: ds.cloneWithRows(eventsData),
       eventsData: eventsData
     })
+  }
+  openDetail(event,{id}){
+    event.preventDefault();
+    console.log(id);
   }
   // 
   /**
@@ -53,7 +58,7 @@ export class Events extends React.Component {
       // Render
       return (
         <View style={styles.card} key={rowData.id} >
-          <TouchableOpacity >
+          <TouchableOpacity onPress = {(event) => this.openDetail(event,rowData)} >
             {/*Image*/}
             <Image
               style={styles.image}

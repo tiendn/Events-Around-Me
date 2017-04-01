@@ -13,15 +13,14 @@ export default CardFooter = (footer) => {
       title: name
     }, {
         dialogTitle: 'Share React Native website',
-        excludedActivityTypes: [
-          'com.apple.UIKit.activity.PostToTwitter'
-        ],
+        // excludedActivityTypes: [
+        //   'com.apple.UIKit.activity.PostToTwitter'
+        // ],
         tintColor: 'green'
       })
       .then(() => { console.log("Share successful") })
       .catch((error) => { console.log("Share successful") });
   };
-  console.log(footer)
   const data = footer.rowData;
   return(
   <View style={styles.cardFooter}>

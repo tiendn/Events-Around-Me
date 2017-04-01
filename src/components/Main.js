@@ -7,6 +7,11 @@ import { Container, Content, Tab, Tabs, Header } from 'native-base';
 
 import Login from '../containers/Login';
 import EventsAround from '../containers/EventsAround';
+
+const TYPE_EVENT = {
+  MyEvent : 1,
+  Popular : 2
+}
 export default class Main extends Component {
   state = {
     initialPosition: 'unknown',
@@ -41,13 +46,16 @@ export default class Main extends Component {
             <Container>
             <Header hasTabs />
             <Tabs>
-                <Tab heading="Next Events">
-                    <EventsAround />
-                </Tab>
-                
                 <Tab heading="Login">
                     <Login />
                 </Tab>
+                <Tab heading="Popular">
+                    <EventsAround type = {TYPE_EVENT.Popular}/>
+                </Tab>
+                <Tab heading="My Events">
+                    <EventsAround type = {TYPE_EVENT.MyEvent}/>
+                </Tab>
+                
                 
             </Tabs>
             </Container>

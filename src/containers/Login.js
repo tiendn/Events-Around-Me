@@ -23,7 +23,9 @@ export default class Login extends Component {
     })
     this._handleFacebookLogin = this._handleFacebookLogin.bind(this);
   }
-  // Change State --> Login
+  /**
+   * Login facebook
+   */
   _login(){
     // let permissions = ['publish_action','public_profile','user_friends','user_events','user_likes','rsvp_event'];
     let permissions = ['public_profile', 'user_events', 'user_friends'];
@@ -48,9 +50,11 @@ export default class Login extends Component {
   _handleFacebookLogin() {
     if (this.state.isLogin){
       this._logout();
+      this.setState({isLogin : false});
     }
     else {
       this._login();
+      this.setState({isLogin : true});
     }
     
     
@@ -62,14 +66,11 @@ export default class Login extends Component {
         <TouchableOpacity
           onPress={this._handleFacebookLogin}
         >
-          {!this.state.isLogin &&
+          
             <Text style={[styles.loginFbText,anotherStyles.loginFbText] }>
-              Login
-          </Text>}
-          {this.state.isLogin &&
-            <Text style={styles.loginFbText}>
-              Logout
-          </Text>}
+              { this.state.isLogin == false ? 'Login' : 'Logout' }
+            </Text>
+          
         </TouchableOpacity>
       </View>
     )
