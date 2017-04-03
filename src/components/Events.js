@@ -35,7 +35,6 @@ export class Events extends React.Component {
   }
   onEventClick(event, rowData) {
     event.preventDefault();
-    console.log(rowData.name)
     this.props.navigator.push({
       component: EventDetail,
       title: rowData.name,
