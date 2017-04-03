@@ -10,7 +10,7 @@ import {
 // import Login from './src/components/Login';
 // import EventsAround from './src/components/EventsAround';
 // import GlobalVars from './src/commons/global-vars';
-import App from './src/components/app'
+import App from './src/components/App'
 
 export default class EventsAroundMe extends Component {
  

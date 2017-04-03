@@ -51,3 +51,11 @@ Build a slide-menu-views
 
 ###Note: Drop fetchData in a file and send param prop rowData to render Function name Events
 
+### ISSUES
+```
+  - Error1: If location not fully filled... Need check before clicking.
+  - Error2: Don't have some status button for change rsvp_status
+  - Error3: Share btn inside 
+  - Error4: Load 100 items, and lazy load.
+  - Error5: Filter by near time, how many attendants or categories.
+```

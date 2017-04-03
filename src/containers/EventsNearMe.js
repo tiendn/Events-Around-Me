@@ -1,4 +1,4 @@
-/* eslint no-console: 0 */
+ /*eslint no-console: 0 
 'use strict';
 
 
@@ -70,4 +70,4 @@ var styles = StyleSheet.create({
   title: {
     fontWeight: '500',
   },
-});
+});*/
