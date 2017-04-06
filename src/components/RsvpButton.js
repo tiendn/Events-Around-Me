@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  TouchableOpacity, Image, Text, View, StyleSheet,ActionSheetIOS
+  TouchableOpacity, Image, Text, View, StyleSheet, ActionSheetIOS
 }
   from 'react-native';
 import { RSVP_STATUS } from '../containers/common';
 import { postFbRequest } from '../providers/FBRequest.js';
+
 const BUTTONS = [
   'Option 0',
   'Option 1',
@@ -27,32 +28,34 @@ export default RsvpButton = (props) => {
         options: BUTTONS,
         cancelButtonIndex: CANCEL_INDEX,
         destructiveButtonIndex: DESTRUCTIVE_INDEX,
+        title: "Action Sheet",
+        message: "Hello, My name is Monkey."
       },
         (buttonIndex) => {
-          alert(BUTTONS[buttonIndex] );
+          alert(BUTTONS[buttonIndex]);
         });
     }
     else {
       let path = eventId + '/' + param;
-      postFbRequest(path, (error, responseData) => {
+      postFbRequest(path, (error, result) => {
         if (error) {
           console.log('Error fetching data: ', error);
+          alert(error.message)
         } else {
-          console.log('Success change RSVP status : ', responseData);
+          console.log('Success change RSVP status : ', result);
+          alert(result.success)
         }
       });
     }
 
   }
-
+  let iconPath = `./img/${props.rsvp_status}.png`;
   return (
     <TouchableOpacity
       onPress={() => onStatusPress(props.eventId, props.rsvp_status)}
       style={styles.rsvpBtnItem}
     >
-      <Image
-        source={require('./img/interested.png')}
-      />
+      <ImageIcon name = {props.rsvp_status}/>
       {props.children && <Text style={styles.childenText}>
         {props.children}
       </Text>}
@@ -65,6 +68,44 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'center',
     flex: 1
+  },
+  childrenText: {
+    // color: '#CCC'
   }
-
 })
+
+const ImageIcon = (props) => {
+  switch (props.name) {
+    case 'attending':
+      return (
+        <Image
+          source={require('./img/attending.png')}
+        />
+      )
+    case 'declined':
+      return (
+        <Image
+          source={require('./img/declined.png')}
+        />
+      )
+    case 'interested':
+      return (
+        <Image
+          source={require('./img/interested.png')}
+        />
+      )
+    case 'more':
+      return (
+        <Image
+          source={require('./img/more.png')}
+        />
+      )
+    default:
+      return (
+        <Image
+          source={require('./img/interested-blank.png')}
+        />
+      )
+      
+  }
+}
