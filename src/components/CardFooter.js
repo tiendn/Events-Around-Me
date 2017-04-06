@@ -1,36 +1,19 @@
-import {Text,View,StyleSheet,Share,TouchableOpacity,Image} from 'react-native';
+import { Text, View, StyleSheet, Share, TouchableOpacity, Image } from 'react-native';
 import React from 'react';
-import {  postFbRequest } from '../providers/FBRequest.js';
+import { RSVP_STATUS } from '../containers/common';
+import RsvpButton from './RsvpButton';
 /**
  * 
  * @param {*} rowData 
  */
-const Status = {
-  Attending: 'attending',
-  Declined: 'declined'
-}
+
 
 // let isInterested = false;
 export default CardFooter = (rowData) => {
   const data = rowData;
-  
-  /**
-   * Change status in event
-   * @param {*} eventId 
-   * @param {*} param 
-   */
-  function onInterest(eventId, param){
-    let path = eventId +'/'+ param;
-    postFbRequest(path, (error, responseData) => {
-      if (error) {
-        console.log('Error fetching data: ', error);
-      } else {
-        console.log('Success change RSVP status : ', responseData);
-        // isInterested = true;
-      }
-    });
-  }
-  function shareText(name){
+
+
+  function shareText(name) {
     Share.share({
       message: 'What do you think ?',
       url: 'http://facebook.github.io/react-native/',
@@ -45,34 +28,33 @@ export default CardFooter = (rowData) => {
       .then(() => { console.log("Share successful") })
       .catch((error) => { console.log("Share successful") });
   };
-  return(
-  <View style={styles.cardFooter}>
-    <Text style={styles.textFooter} numberOfLines={1}>
-      {data.attending_count == undefined ? '' : '#' + data.attending_count + ' '}
-      {data.category == undefined ? '' : '#' + data.category}
-    </Text>
+  return (
+    <View style={styles.cardFooter}>
+      <Text style={styles.textFooter} numberOfLines={1}>
+        {data.attending_count == undefined ? '' : '#' + data.attending_count + ' '}
+        {data.category == undefined ? '' : '#' + data.category}
+      </Text>
 
-    <TouchableOpacity
-      style={[styles.share, styles.button]}
-      onPress={() => { shareText(data.name) }}
-    >
-      {/*https://facebook.github.io/react-native/docs/share.html*/}
-      <Image
-        style={styles.icon}
-        source={require('./img/share-ic.png')}
-      />
-    </TouchableOpacity>
-    <TouchableOpacity 
-      style={[styles.interested, styles.button]}
-      onPress={ () => onInterest(data.id,Status.Attending) }
+      <TouchableOpacity
+        style={[styles.share, styles.button]}
+        onPress={() => { shareText(data.name) }}
       >
-      <Image
-        style={[styles.icon,styles.iconInterested]}
-        source={require('./img/interested.png')}
-      />
-    </TouchableOpacity>
-  </View>
-)}
+        {/*https://facebook.github.io/react-native/docs/share.html*/}
+        <Image
+          style={styles.icon}
+          source={require('./img/share-ic.png')}
+        />
+      </TouchableOpacity>
+      <View style={[styles.interested, styles.button]}>
+        <RsvpButton
+          eventId={data.id}
+          rsvp_status={RSVP_STATUS.Interested}
+        />
+      </View>
+
+    </View>
+  )
+}
 
 const styles = StyleSheet.create({
   // attending: {
@@ -94,7 +76,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  
+  interested: {
+    flex: 2
+  },
   cardContent: {
     position: 'relative',
     borderTopWidth: 1,
@@ -108,17 +92,15 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row'
   },
-  icon: {
-    height: 32,
-    width: 32,
-  },
-  iconInterested:{
-    // backgroundColor : isInterested == true ? 'red' : 'white' 
-    
-  },
-  interested: {
-    flex: 1
-  },
+  // icon: {
+  //   height: 32,
+  //   width: 32,
+  // },
+  // iconInterested:{
+  //   // backgroundColor : isInterested == true ? 'red' : 'white' 
+
+  // },
+
   image: {
     flex: 1,
     resizeMode: 'cover',
@@ -126,7 +108,7 @@ const styles = StyleSheet.create({
     // resizeMode: 'stretch'
   },
   share: {
-    flex: 1
+    flex: 2
   },
   startTime: {
     fontSize: 14

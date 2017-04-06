@@ -16,11 +16,11 @@ const TYPE_EVENT = {
 
 var latitude = 0;
 var longtitude = 0;
-var keyword = 'Hanoi';
+var keyword = 'BKHUP';
 /**
  * Path event send to service and request to Facebook GraphAPI
  */
-var fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description';
+var fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
 var pathLocationSearch = 'search?q=hanoi&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
 var pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
 var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';

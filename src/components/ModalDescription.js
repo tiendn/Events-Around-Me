@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
 export default class DetailModal extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.content)
     this.state = {
       modalVisible: false,
     }
@@ -70,7 +69,6 @@ export default class DetailModal extends React.Component {
             <TouchableOpacity
               onPress={() => this.setModalVisible(false)}
               activeOpacity={0.7}
-
             >
               <Image
                 style={styles.btnClose}

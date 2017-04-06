@@ -43,7 +43,6 @@ export default class MapModal extends React.Component {
           transparent={false}
           visible={this.state.modalVisible}
         >
-
           <MapView
             style={{ flex: 1 }}
             showsUserLocation={true}

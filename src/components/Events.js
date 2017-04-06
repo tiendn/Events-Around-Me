@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     backgroundColor: '#fff',
-    borderColor: '#ccc',
     borderWidth: (1 / PixelRatio.getPixelSizeForLayoutSize(1)),
     shadowOpacity: 0.1,
     shadowRadius: 1.5,
