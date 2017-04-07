@@ -116,6 +116,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.Interested}
+                currentStatus = {dataDetail.rsvp_status}
               >
                 Interested
               </RsvpButton>
@@ -123,6 +124,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.Attending}
+                currentStatus = {dataDetail.rsvp_status}
               >
                 Going
               </RsvpButton>
@@ -130,6 +132,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.Declined}
+                currentStatus = {dataDetail.rsvp_status}
               >
                 Ignored
               </RsvpButton>
@@ -137,6 +140,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.More}
+                currentStatus = {dataDetail.rsvp_status}
               >
                 More
               </RsvpButton>

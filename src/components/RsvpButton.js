@@ -16,7 +16,7 @@ const BUTTONS = [
 var DESTRUCTIVE_INDEX = 3;
 var CANCEL_INDEX = 4;
 export default RsvpButton = (props) => {
-  console.log(props)
+  // console.log(props)
   /**
    * Change status in event
    * @param {*} eventId 

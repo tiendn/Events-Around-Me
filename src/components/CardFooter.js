@@ -49,6 +49,7 @@ export default CardFooter = (rowData) => {
         <RsvpButton
           eventId={data.id}
           rsvp_status={RSVP_STATUS.Interested}
+          current_status = {data.rsvp_status}
         />
       </View>
 
