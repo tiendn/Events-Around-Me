@@ -59,7 +59,7 @@ export class Events extends React.Component {
             {/*Image*/}
             <Image
               style={styles.image}
-              source={{ uri: cover.source, cache: 'only-if-cached' }}
+              source={{ uri: cover.source}}
               defaultSource={require('./img/not-available.png')}
             />
             <CardContent {...rowData} />
@@ -108,11 +108,11 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     backgroundColor: '#fff',
-    borderColor: '#ccc',
     borderWidth: (1 / PixelRatio.getPixelSizeForLayoutSize(1)),
     shadowOpacity: 0.1,
     shadowRadius: 1.5,
     elevation: 3,
+    borderColor: '#ccc'
 
   },
   cardContent: {

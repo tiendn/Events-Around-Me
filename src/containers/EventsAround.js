@@ -14,16 +14,17 @@ const TYPE_EVENT = {
  * Config 
  */
 
-var latitude = 0;
-var longtitude = 0;
-var keyword = 'Hanoi';
+const latitude = 0;
+const longtitude = 0;
+const keyword = 'hcm';
+console.log(keyword)
 /**
  * Path event send to service and request to Facebook GraphAPI
  */
-var fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description';
-var pathLocationSearch = 'search?q=hanoi&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
-var pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
-var pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
+const fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
+let pathLocationSearch = 'search?q='+keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
+let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
+let pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
 
 /**
  * 
