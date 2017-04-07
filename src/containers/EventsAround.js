@@ -16,7 +16,7 @@ const TYPE_EVENT = {
 
 const latitude = 0;
 const longtitude = 0;
-const keyword = 'h cm';
+const keyword = 'hcm';
 console.log(keyword)
 /**
  * Path event send to service and request to Facebook GraphAPI
