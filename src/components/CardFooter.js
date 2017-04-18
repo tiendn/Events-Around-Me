@@ -93,10 +93,12 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row'
   },
-  // icon: {
-  //   height: 32,
-  //   width: 32,
-  // },
+  icon: {
+    // height: 32,
+    // width: 32,
+    // backgroundColor: 'red'
+    
+  },
   // iconInterested:{
   //   // backgroundColor : isInterested == true ? 'red' : 'white' 
 
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     // resizeMode: 'stretch'
   },
   share: {
-    flex: 2
+    flex: 2,
   },
   startTime: {
     fontSize: 14
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
   },
   textFooter: {
-    flex: 4,
+    flex: 6,
     paddingVertical: 16,
     paddingHorizontal: 12,
   },

@@ -1,26 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  NavigatorIOS,
-  TouchableHighlight
 } from 'react-native';
-// import Login from './src/components/Login';
-// import EventsAround from './src/components/EventsAround';
-// import GlobalVars from './src/commons/global-vars';
+import {Provider} from 'react-redux';
+import { createStore } from 'redux';
+import eventApp from './src/reducers';
 import App from './src/components/App'
-
+const store = createStore(eventApp);
 export default class EventsAroundMe extends Component {
- 
-
   render() {
     return (
-      <App />
+      <Provider store={store}>
+        <App />
+      </Provider>
     );
   }
 }
-
-
 AppRegistry.registerComponent('EventsAroundMe', () => EventsAroundMe);

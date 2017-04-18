@@ -9,6 +9,7 @@ import {
   NavigatorIOS,
   TouchableOpacity,
   PixelRatio,
+  TextInput,
   Share
 } from 'react-native';
 import CardContent from './CardContent';
@@ -71,19 +72,18 @@ export class Events extends React.Component {
   }
 
   render() {
-    if (this.state.dataSource.length !== 0) {
       return (
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => this._renderRow(rowData)}
-          style={styles.body}
-        />
+        <View>
+          { this.state.dataSource.length !== 0 ?
+            <ListView
+              dataSource={this.state.dataSource}
+              renderRow={(rowData) => this._renderRow(rowData)}
+              style={styles.body}
+            />
+            : <Text> Loading </Text>
+          }
+          </View>
       );
-    }
-    else
-      return (
-        <Text> Nothing here </Text>
-      )
   }
 
 
@@ -128,6 +128,14 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row'
   },
+  // searchInput:{
+  //   height: 40,
+  //   borderWidth: 0.5,
+  //   borderColor: '#0f0f0f',
+  //   fontSize: 13,
+  //   paddingVertical: 4,
+  //   paddingHorizontal: 12
+  // },
   icon: {
     height: 32,
     width: 32

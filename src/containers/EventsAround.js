@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native'
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
 import { Events } from '../components/Events';
+import  SearchBar  from '../components/SearchBar';
 /**
  * 
  */
@@ -16,19 +17,20 @@ const TYPE_EVENT = {
 
 const latitude = 0;
 const longtitude = 0;
-const keyword = 'hcm';
+const keyword = 'Hanoi';
 console.log(keyword)
 /**
  * Path event send to service and request to Facebook GraphAPI
  */
 const fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
-let pathLocationSearch = 'search?q='+keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
+let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
 let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
 let pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
 
 /**
  * 
  */
+
 export default class EventsAround extends React.Component {
   constructor(props) {
     super(props);
@@ -52,6 +54,7 @@ export default class EventsAround extends React.Component {
     }
 
   }
+
   /**
    * Sort data
    * @param {*} responseData 
@@ -74,88 +77,86 @@ export default class EventsAround extends React.Component {
     }
     return data;
   }
-/**
- * Check expired
- * @param {*} data 
- */
-checkExpired(inputData){
-  let outputData = Object.assign([], inputData);
-  if (this.state.type !== TYPE_EVENT.MyEvent) {
-    // Sort data by near time
-    outputData = outputData.filter((item) => {
-      let currentDate = new Date();
-      let endTime = new Date(item.end_time);
-      let startTime = new Date(item.start_time);
-      return currentDate < startTime ? item.end_time != undefined ?
-        endTime > currentDate ? item : undefined : undefined : undefined;
+  /**
+   * Check expired
+   * @param {*} data 
+   */
+  checkExpired(inputData) {
+    let outputData = Object.assign([], inputData);
+    if (this.state.type !== TYPE_EVENT.MyEvent) {
+      // Sort data by near time
+      outputData = outputData.filter((item) => {
+        let currentDate = new Date();
+        let endTime = new Date(item.end_time);
+        let startTime = new Date(item.start_time);
+        return currentDate < startTime ? item.end_time != undefined ?
+          endTime > currentDate ? item : undefined : undefined : undefined;
+      });
+    }
+    return outputData;
+  }
+  /**
+   * Format time -- mutate value 
+   * @param {*} data 
+   */
+  formatTime(inputData) {
+    let outputData = Object.assign([], inputData);
+    let start_time;
+    const options = {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: 'numeric'
+    };
+    options.timeZone = 'UTC';
+    options.timeZoneName = 'short';
+    if (outputData.start_time !== "")
+      outputData.start_time = new Date(outputData.start_time).toLocaleDateString('en-US', options)
+        .slice(0, -3).toUpperCase();
+    return outputData;
+  }
+  /**
+   * Store data
+   * @param {*} responseData 
+   */
+  _getData(responseData) {
+
+    let data = this.sortDataByNearTime(responseData); // Sort data by near time
+
+    data = this.checkExpired(data); // If not my events, filter events has expired
+
+    data = data.map(item => this.formatTime(item)); // Format time
+
+
+    this.setState({
+      eventsData: data
+    }) // Set data to state
+  }
+
+  /**
+   * Get GraphAPI from service
+   * @param {*} path 
+   */
+  _getEvents(path) {
+    getFbRequest(path, (error, responseData) => {
+      // console.log('Success fetching ddata: ', responseData);
+      if (error === null)
+        this._getData(responseData);
     });
   }
-  return outputData;
-}
-/**
- * Format time -- mutate value 
- * @param {*} data 
- */
-formatTime(inputData) {
-  let outputData = Object.assign([], inputData);
-  let start_time;
-  const options = {
-    weekday: 'short', month: 'short', day: 'numeric',
-    hour: 'numeric', minute: 'numeric'
-  };
-  options.timeZone = 'UTC';
-  options.timeZoneName = 'short';
-  if (outputData.start_time !== "")
-    outputData.start_time = new Date(outputData.start_time).toLocaleDateString('en-US', options)
-      .slice(0, -3).toUpperCase();
-  return outputData;
-}
-/**
- * Store data
- * @param {*} responseData 
- */
-_getData(responseData) {
-  
-  let data = this.sortDataByNearTime(responseData); // Sort data by near time
-  
-  data = this.checkExpired(data); // If not my events, filter events has expired
-  
-  data = data.map(item => this.formatTime(item)); // Format time
 
-  
-  this.setState({
-    eventsData: data
-  }) // Set data to state
-}
+  /**
+   * Render
+   */
+  render() {
+    // console.log(this.state.eventsData);
+      return (
+        <View>
+          <SearchBar />
+          { this.state.eventsData.length !== 0 
+            ? <Events eventsData={this.state.eventsData} {...this.props} /> 
+            : <Text style={{ marginTop: 100 }}> Nothing </Text>
+          }
+        </View>
+      )
 
-/**
- * Get GraphAPI from service
- * @param {*} path 
- */
-_getEvents(path) {
-  getFbRequest(path, (error, responseData) => {
-    // console.log('Success fetching ddata: ', responseData);
-    if (error === null)
-      this._getData(responseData);
-
-  });
-}
-
-/**
- * Render
- */
-render() {
-  console.log(this.state.eventsData);
-  if (this.state.eventsData.length !== 0) {
-    return (
-      <Events eventsData={this.state.eventsData} {...this.props} />
-    )
-  } else {
-    return (
-      <Text style={{ marginTop: 100 }}> Nothing </Text>
-    )
   }
-
-
-}
 }
