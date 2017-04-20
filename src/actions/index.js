@@ -7,3 +7,8 @@ export function getQuerySearch(query) {
     query
   };
 }
+export const loginManager = (type) => {
+  return {
+    type
+  }
+}
