@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 export default class EventDetail extends Component {
   constructor(props) {
     super(props);
-    // console.log(props);
+    console.log(props);
     this.state = {
       modalVisible: false,
     }
@@ -103,7 +103,7 @@ export default class EventDetail extends Component {
         <ScrollView>
           <Image
             style={styles.image}
-            source={{ uri: cover.source, cache: 'only-if-cached' }}
+            source={{ uri: cover.source}}
             defaultSource={require('./img/not-available.png')}
           />
           <View style={styles.textContent}>
@@ -116,7 +116,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.Interested}
-                currentStatus = {dataDetail.rsvp_status}
+                currentStatus={dataDetail.rsvp_status}
               >
                 Interested
               </RsvpButton>
@@ -124,7 +124,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.Attending}
-                currentStatus = {dataDetail.rsvp_status}
+                currentStatus={dataDetail.rsvp_status}
               >
                 Going
               </RsvpButton>
@@ -132,7 +132,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.Declined}
-                currentStatus = {dataDetail.rsvp_status}
+                currentStatus={dataDetail.rsvp_status}
               >
                 Ignored
               </RsvpButton>
@@ -140,7 +140,7 @@ export default class EventDetail extends Component {
                 style={styles.rsvpBtnItem}
                 eventId={dataDetail.id}
                 rsvp_status={RSVP_STATUS.More}
-                currentStatus = {dataDetail.rsvp_status}
+                currentStatus={dataDetail.rsvp_status}
               >
                 More
               </RsvpButton>
@@ -150,29 +150,39 @@ export default class EventDetail extends Component {
               content={dataDetail.description ? dataDetail.description : 'No description'}
             />
           </View>
-          {/* Map location*/}
-          {dataDetail.place.location.street && <MapModal
-            location={dataDetail.place.location}
-          />}
-          <View style={styles.location}>
-            <Text style={styles.placeContent}>
-              <Text style={styles.placeName}>{dataDetail.place.name} </Text>
-              {"\n"}
-              {dataDetail.place.location.street}
-            </Text>
-            <Text style={styles.placeDistance}> ???? </Text>
-          </View>
+          
+          {/* Map */}
+          <MapDescription dataDetail={dataDetail} />
+
         </ScrollView>
       </View>
       //  Thieesu cho hien thi cho phep tuong tac de goi tuong thay doi trang thai rsvp
-      /**
-       *  EventDetail
-        Include: Image , title, start, end, place, description,
-       */
     )
   }
 }
-
+const MapDescription = ({ dataDetail }) => {
+  try {
+    return (
+      <View>
+        {dataDetail.place.location !== undefined && <MapModal
+          location={dataDetail.place.location}
+        />}
+        <View style={styles.location}>
+          <Text style={styles.placeContent}>
+            <Text style={styles.placeName}>{dataDetail.place.name} </Text>
+            {"\n"}
+            {dataDetail.place.location.street === undefined ? '' : dataDetail.place.location.street}
+          </Text>
+          <Text style={styles.placeDistance}> ???? </Text>
+        </View>
+      </View>
+    )
+  }
+  catch (ex) {
+    console.log("No location", ex);
+    return null;
+  }
+}
 EventDetail.propTypes = {
 
 };

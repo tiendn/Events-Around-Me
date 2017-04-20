@@ -15,23 +15,35 @@ import {
 import CardContent from './CardContent';
 import CardFooter from './CardFooter';
 import EventDetail from './EventDetail';
+
+const ds = new ListView.DataSource({
+  rowHasChanged: (r1, r2) => r1 !== r2
+});
 export class Events extends React.Component {
   constructor(props) {
     super(props);
     console.log(props)
     this.onEventClick = this.onEventClick.bind(this);
+    this.state = ({
+      dataSource: []
+    })
+  }
+  componentDidMount(){
+    let eventsData = this.props.eventsData
+    if (eventsData.length > 0 )
+       this.setState({
+          dataSource: ds.cloneWithRows(eventsData),
+        })
   }
   /**
    * 
    */
-  componentWillMount() {
-    const ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
-    });
-    const eventsData = this.props.eventsData;
+  componentWillReceiveProps(props) {
+    console.log(props)
+    
+    const eventsData = props.eventsData;
     this.setState({
       dataSource: ds.cloneWithRows(eventsData),
-      eventsData: eventsData
     })
   }
   onEventClick(event, rowData) {
@@ -74,8 +86,8 @@ export class Events extends React.Component {
   render() {
       return (
         <View>
-          { this.state.dataSource.length !== 0 ?
-            <ListView
+          { this.state.dataSource.length !== 0 
+            ? <ListView
               dataSource={this.state.dataSource}
               renderRow={(rowData) => this._renderRow(rowData)}
               style={styles.body}

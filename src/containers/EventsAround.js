@@ -3,6 +3,8 @@ import { View, Text } from 'react-native'
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
 import { Events } from '../components/Events';
 import  SearchBar  from '../components/SearchBar';
+import { connect } from 'react-redux';
+
 /**
  * 
  */
@@ -18,43 +20,53 @@ const TYPE_EVENT = {
 const latitude = 0;
 const longtitude = 0;
 const keyword = 'Hanoi';
-console.log(keyword)
 /**
  * Path event send to service and request to Facebook GraphAPI
  */
 const fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
-let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
-let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
-let pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
-
 /**
  * 
  */
 
-export default class EventsAround extends React.Component {
+class EventsAround extends React.Component {
   constructor(props) {
     super(props);
     console.log(props)
     this.state = ({
       eventsData: [],
-      type: this.props.type
+      type: this.props.type,
+      query: '',
     })
-    // this._shareText = this._shareText.bind(this);
   }
-  componentWillMount() {
+  componentDidMount(){
+    this.switchEvent();
+  }
+  componentWillReceiveProps(props){
+    console.log("WWW")
+    this.setState({
+      type: props.type
+    })
+    this.switchEvent(props);
+  }
+  switchEvent(props : ?Object = {query: 'Hanoi'}){
+    console.log(props);
+    console.log(this.state)
+    let keyword = props.query;
+    let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
+    let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
+    let pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
     switch (this.state.type) {
       case TYPE_EVENT.Popular:
         this._getEvents(pathEventsSearch);
         break;
       case TYPE_EVENT.MyEvent:
+        console.log("My event")
         this._getEvents(pathMyEvents);
         break;
       default:
         this._getEvents(pathEventsSearch);
     }
-
   }
-
   /**
    * Sort data
    * @param {*} responseData 
@@ -118,13 +130,13 @@ export default class EventsAround extends React.Component {
    * @param {*} responseData 
    */
   _getData(responseData) {
+    console.log(responseData)
 
     let data = this.sortDataByNearTime(responseData); // Sort data by near time
 
     data = this.checkExpired(data); // If not my events, filter events has expired
 
     data = data.map(item => this.formatTime(item)); // Format time
-
 
     this.setState({
       eventsData: data
@@ -147,10 +159,9 @@ export default class EventsAround extends React.Component {
    * Render
    */
   render() {
-    // console.log(this.state.eventsData);
       return (
         <View>
-          <SearchBar />
+          { this.state.type !== TYPE_EVENT.MyEvent && <SearchBar /> }
           { this.state.eventsData.length !== 0 
             ? <Events eventsData={this.state.eventsData} {...this.props} /> 
             : <Text style={{ marginTop: 100 }}> Nothing </Text>
@@ -160,3 +171,11 @@ export default class EventsAround extends React.Component {
 
   }
 }
+
+mapStateToProps = (state) => {
+  return {
+    query: state.search.query
+  }
+}
+
+export default connect (mapStateToProps)(EventsAround)

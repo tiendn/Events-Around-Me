@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import SearchBar from './search';
 
 const eventApp = combineReducers({
-  SearchBar
+  search: SearchBar
 });
 
 export default eventApp;
