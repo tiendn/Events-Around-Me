@@ -28,19 +28,19 @@ export class Events extends React.Component {
       dataSource: []
     })
   }
-  componentDidMount(){
+  componentDidMount() {
     let eventsData = this.props.eventsData
-    if (eventsData.length > 0 )
-       this.setState({
-          dataSource: ds.cloneWithRows(eventsData),
-        })
+    if (eventsData.length > 0)
+      this.setState({
+        dataSource: ds.cloneWithRows(eventsData),
+      })
   }
   /**
    * 
    */
   componentWillReceiveProps(props) {
     console.log(props)
-    
+
     const eventsData = props.eventsData;
     this.setState({
       dataSource: ds.cloneWithRows(eventsData),
@@ -56,7 +56,7 @@ export class Events extends React.Component {
     // console.log(id);
   }
   // 
-  
+
   /**
    * Render result
    * @param {*} rowData 
@@ -68,11 +68,11 @@ export class Events extends React.Component {
       // Render
       return (
         <View style={styles.card} key={rowData.id} >
-          <TouchableOpacity onPress={(event) => this.onEventClick(event, rowData)} activeOpacity = {0.7} >
+          <TouchableOpacity onPress={(event) => this.onEventClick(event, rowData)} activeOpacity={0.7} >
             {/*Image*/}
             <Image
               style={styles.image}
-              source={{ uri: cover.source}}
+              source={{ uri: cover.source }}
               defaultSource={require('./img/not-available.png')}
             />
             <CardContent {...rowData} />
@@ -84,24 +84,25 @@ export class Events extends React.Component {
   }
 
   render() {
-      return (
-        <View>
-          { this.state.dataSource.length !== 0 
-            ? <ListView
-              dataSource={this.state.dataSource}
-              renderRow={(rowData) => this._renderRow(rowData)}
-              style={styles.body}
-            />
-            : <Text> Loading </Text>
-          }
-          </View>
-      );
+    return (
+      <View >
+        {this.state.dataSource.length !== 0
+          ? <ListView
+            dataSource={this.state.dataSource}
+            renderRow={(rowData) => this._renderRow(rowData)}
+            style={styles.body}
+          />
+          : <Text> Loading </Text>
+        }
+      </View>
+    );
   }
 
 
 }
 
 const styles = StyleSheet.create({
+  
   body: {
     backgroundColor: '#dddddd'
   },

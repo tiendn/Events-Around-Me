@@ -3,10 +3,9 @@ import {
   AppRegistry,
 } from 'react-native';
 import {Provider} from 'react-redux';
-import { createStore } from 'redux';
-import eventApp from './src/reducers';
-import App from './src/components/App'
-const store = createStore(eventApp);
+import createStore from './src/reducers/createStore';
+import App from './src/components/app'
+const store = createStore();
 export default class EventsAroundMe extends Component {
   render() {
     return (

@@ -6,6 +6,9 @@ import {
   Button,
   TouchableOpacity,
 } from 'react-native'
+import { connect } from 'react-redux';
+import { loginManager } from '../actions';
+import { LOGIN, LOGOUT } from '../common/constants';
 import { LoginManager } from 'react-native-fbsdk';
 const anotherStyles = require('../style/Styles');
 
@@ -14,66 +17,76 @@ const anotherStyles = require('../style/Styles');
 //   LoginButton,
 //   LoginManager,
 // } = FBSDK;
-export default class Login extends Component {
-  constructor() {
-    super();
-    
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    // console.log(props);
     this.state = ({
       isLogin: false
     })
-    this._handleFacebookLogin = this._handleFacebookLogin.bind(this);
+    // this._handleFacebookLogin = this._handleFacebookLogin.bind(this);
   }
+  
   /**
    * Login facebook
    */
-  _login(){
-    // let permissions = ['publish_action','public_profile','user_friends','user_events','user_likes','rsvp_event'];
+  _login() {
+    let $scope = this;
     let permissions = ['public_profile', 'user_events', 'user_friends'];
     LoginManager.logInWithReadPermissions(permissions).then(
       function (result) {
         if (result.isCancelled) {
           console.log('Login cancelled')
         } else {
-          this.setState = ({
-            isLogin: true
-          })
-          console.log('Login success with permissions: ' + result.grantedPermissions.toString())
+          $scope.props.dispatch(loginManager(LOGIN));
+          console.log('Login success with information: ', result)
         }
       },
       function (error) {
         console.log('Login fail with error: ' + error)
       })
+
   }
-  _logout(){
-    LoginManager.logOut();
-  }
-  _handleFacebookLogin() {
-    if (this.state.isLogin){
-      this._logout();
-      this.setState({isLogin : false});
+  // Logout
+  _logout() {
+    try {
+      LoginManager.logOut();
+      this.props.dispatch(loginManager(LOGOUT));
     }
-    else {
-      this._login();
-      this.setState({isLogin : true});
+    catch (ex) {
+      console.log("Logout error", ex)
     }
-    
-    
   }
+  // Render
   render() {
-    // if this.state.isLogin = true push nav
-    return (
-      <View style={styles.loginFb}>
-        <TouchableOpacity
-          onPress={this._handleFacebookLogin}
-        >
-          
-            <Text style={[styles.loginFbText,anotherStyles.loginFbText] }>
-              { this.state.isLogin == false ? 'Login' : 'Logout' }
-            </Text>
-          
-        </TouchableOpacity>
-      </View>
-    )
+    if (!this.props.isLogin)
+      return (
+        <View style={styles.container}>
+          <Text style={styles.title}>
+            You need login with facebook before use app.
+          </Text>
+          <TouchableOpacity
+            onPress={() => this._login()}
+            style={styles.btnLogin}
+          >
+            <Text style={[styles.loginFbText, anotherStyles.loginFbText]}>
+              Login with Facebook
+              </Text>
+          </TouchableOpacity>
+        </View>
+      )
+    else {
+      return (
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={[styles.btnLogout, styles.logout]}
+            onPress={() => this._logout()}
+          >
+            <Text style={styles.text}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
   }
   /*render(){
     var $scope = this;
@@ -108,19 +121,48 @@ export default class Login extends Component {
 
 };
 const styles = StyleSheet.create({
+  title: {
+    marginBottom: 10
+  },
   loginFbText: {
     color: '#f6f9ff',
     fontSize: 20,
+    paddingVertical: 10,
     fontWeight: 'bold',
-    backgroundColor: '#4080ff',
     textAlign: 'center',
 
   },
-  loginFb: {
-    width: 100,
-    padding: 8,
-    borderRadius: 5
+  btnLogout: {
+    backgroundColor: 'white',
+    width: '100%',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: '#dfe0e4',
+    paddingVertical: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    alignItems: 'center'
+  },
+  text: {
+    color: '#5890ff'
+  },
+  btnLogin: {
+    backgroundColor: '#4080ff',
+    paddingHorizontal: '10%'
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: '2%',
+    paddingVertical: '40%',
+    borderRadius: 5,
+    alignItems: 'center',
   }
 
 });
+mapStateToProps = (state) => {
+  return {
+    isLogin: state.appGlobalState.isLogin
+  }
+}
+export default connect(mapStateToProps)(Login);
 // loginFbText 

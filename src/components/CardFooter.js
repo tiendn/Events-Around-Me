@@ -13,11 +13,11 @@ export default CardFooter = (rowData) => {
   const data = rowData;
 
 
-  function shareText(name) {
+  function shareText(data) {
     Share.share({
       message: 'What do you think ?',
-      url: 'http://facebook.github.io/react-native/',
-      title: name
+      url: 'http://facebook.com/'+data.id,
+      title: data.name
     }, {
         dialogTitle: 'Share React Native website',
         // excludedActivityTypes: [
@@ -37,7 +37,7 @@ export default CardFooter = (rowData) => {
 
       <TouchableOpacity
         style={[styles.share, styles.button]}
-        onPress={() => { shareText(data.name) }}
+        onPress={() => { shareText(data) }}
       >
         {/*https://facebook.github.io/react-native/docs/share.html*/}
         <Image

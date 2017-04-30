@@ -5,13 +5,13 @@ import {
   TabBarIOS,
   StyleSheet,
 } from 'react-native';
-
+import { connect } from 'react-redux';
 import EventsAround from '../containers/EventsAround';
 import Login from '../containers/Login';
 import Settings from '../components/Settings';
 const base64Icon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAABLCAQAAACSR7JhAAADtUlEQVR4Ac3YA2Bj6QLH0XPT1Fzbtm29tW3btm3bfLZtv7e2ObZnms7d8Uw098tuetPzrxv8wiISrtVudrG2JXQZ4VOv+qUfmqCGGl1mqLhoA52oZlb0mrjsnhKpgeUNEs91Z0pd1kvihA3ULGVHiQO2narKSHKkEMulm9VgUyE60s1aWoMQUbpZOWE+kaqs4eLEjdIlZTcFZB0ndc1+lhB1lZrIuk5P2aib1NBpZaL+JaOGIt0ls47SKzLC7CqrlGF6RZ09HGoNy1lYl2aRSWL5GuzqWU1KafRdoRp0iOQEiDzgZPnG6DbldcomadViflnl/cL93tOoVbsOLVM2jylvdWjXolWX1hmfZbGR/wjypDjFLSZIRov09BgYmtUqPQPlQrPapecLgTIy0jMgPKtTeob2zWtrGH3xvjUkPCtNg/tm1rjwrMa+mdUkPd3hWbH0jArPGiU9ufCsNNWFZ40wpwn+62/66R2RUtoso1OB34tnLOcy7YB1fUdc9e0q3yru8PGM773vXsuZ5YIZX+5xmHwHGVvlrGPN6ZSiP1smOsMMde40wKv2VmwPPVXNut4sVpUreZiLBHi0qln/VQeI/LTMYXpsJtFiclUN+5HVZazim+Ky+7sAvxWnvjXrJFneVtLWLyPJu9K3cXLWeOlbMTlrIelbMDlrLenrjEQOtIF+fuI9xRp9ZBFp6+b6WT8RrxEpdK64BuvHgDk+vUy+b5hYk6zfyfs051gRoNO1usU12WWRWL73/MMEy9pMi9qIrR4ZpV16Rrvduxazmy1FSvuFXRkqTnE7m2kdb5U8xGjLw/spRr1uTov4uOgQE+0N/DvFrG/Jt7i/FzwxbA9kDanhf2w+t4V97G8lrT7wc08aA2QNUkuTfW/KimT01wdlfK4yEw030VfT0RtZbzjeMprNq8m8tnSTASrTLti64oBNdpmMQm0eEwvfPwRbUBywG5TzjPCsdwk3IeAXjQblLCoXnDVeoAz6SfJNk5TTzytCNZk/POtTSV40NwOFWzw86wNJRpubpXsn60NJFlHeqlYRbslqZm2jnEZ3qcSKgm0kTli3zZVS7y/iivZTweYXJ26Y+RTbV1zh3hYkgyFGSTKPfRVbRqWWVReaxYeSLarYv1Qqsmh1s95S7G+eEWK0f3jYKTbV6bOwepjfhtafsvUsqrQvrGC8YhmnO9cSCk3yuY984F1vesdHYhWJ5FvASlacshUsajFt2mUM9pqzvKGcyNJW0arTKN1GGGzQlH0tXwLDgQTurS8eIQAAAABJRU5ErkJggg==';
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   tabContent: {
     flex: 1,
     alignItems: 'center',
@@ -26,15 +26,15 @@ const TYPE_EVENT = {
   MyEvent: 1,
   Popular: 2
 }
-const SELECTED_TAB ={
-  IEvents : 'IEvents',
-  Popular : 'Popular',
-  Settings : 'Settings'
+const SELECTED_TAB = {
+  IEvents: 'IEvents',
+  Popular: 'Popular',
+  Settings: 'Settings'
 }
-export default class Tabs extends Component {
+class Tabs extends Component {
   constructor(props) {
     super(props);
-    console.log(props)
+    // console.log(props)
     this.state = ({
       selectedTab: SELECTED_TAB.Popular,
       notifCount: 0,
@@ -56,17 +56,17 @@ export default class Tabs extends Component {
         tintColor="#5890ff"
         unselectedItemTintColor="gray"
         barTintColor="white"
-        style={{marginTop: 60}}>
+        style={{ marginTop: 60 }}>
         <TabBarIOS.Item
           title="News Feed"
           icon={{ uri: base64Icon, scale: 3 }}
           selected={this.state.selectedTab === SELECTED_TAB.Popular}
           onPress={() => {
             this.setState({
-            selectedTab: SELECTED_TAB.Popular,
+              selectedTab: SELECTED_TAB.Popular,
             });
           }}>
-          <EventsAround type={TYPE_EVENT.Popular} {...this.props}/>
+          {this.props.isLogin ? <EventsAround type={TYPE_EVENT.Popular} {...this.props} /> : <Login />}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           systemIcon="history"
@@ -79,7 +79,7 @@ export default class Tabs extends Component {
               notifCount: this.state.notifCount + 1,
             });
           }}>
-          <EventsAround type={TYPE_EVENT.MyEvent} />
+          {this.props.isLogin ? <EventsAround type={TYPE_EVENT.MyEvent} {...this.props} /> : <Login />}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           renderAsOriginal
@@ -98,3 +98,11 @@ export default class Tabs extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    isLogin: state.appGlobalState.isLogin
+  }
+}
+
+export default connect (mapStateToProps)(Tabs);

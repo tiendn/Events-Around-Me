@@ -4,6 +4,6 @@ const {StyleSheet} = React;
 
 module.exports = StyleSheet.create({
     loginFbText : {
-        backgroundColor : '#eee'
+        // backgroundColor : '#eee'
     }
 })

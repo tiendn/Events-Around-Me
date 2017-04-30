@@ -2,9 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native'
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
 import { Events } from '../components/Events';
-import  SearchBar  from '../components/SearchBar';
+import SearchBar from '../components/SearchBar';
 import { connect } from 'react-redux';
-
 /**
  * 
  */
@@ -13,10 +12,6 @@ const TYPE_EVENT = {
   Popular: 2
 }
 
-/**
- * Config 
- */
-
 const latitude = 0;
 const longtitude = 0;
 const keyword = 'Hanoi';
@@ -24,9 +19,7 @@ const keyword = 'Hanoi';
  * Path event send to service and request to Facebook GraphAPI
  */
 const fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
-/**
- * 
- */
+
 
 class EventsAround extends React.Component {
   constructor(props) {
@@ -38,19 +31,19 @@ class EventsAround extends React.Component {
       query: '',
     })
   }
-  componentDidMount(){
-    this.switchEvent();
+  componentDidMount() {
+    // this.switchEvent();
   }
-  componentWillReceiveProps(props){
-    console.log("WWW")
+  componentWillReceiveProps(props) {
+    console.log(props)
     this.setState({
-      type: props.type
+      type: props.type,
+      isLogin: props.isLogin
     })
     this.switchEvent(props);
   }
-  switchEvent(props : ?Object = {query: 'Hanoi'}){
+  switchEvent(props: ?Object = { query: 'Hanoi' }) {
     console.log(props);
-    console.log(this.state)
     let keyword = props.query;
     let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
     let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
@@ -60,7 +53,6 @@ class EventsAround extends React.Component {
         this._getEvents(pathEventsSearch);
         break;
       case TYPE_EVENT.MyEvent:
-        console.log("My event")
         this._getEvents(pathMyEvents);
         break;
       default:
@@ -159,23 +151,24 @@ class EventsAround extends React.Component {
    * Render
    */
   render() {
-      return (
-        <View>
-          { this.state.type !== TYPE_EVENT.MyEvent && <SearchBar /> }
-          { this.state.eventsData.length !== 0 
-            ? <Events eventsData={this.state.eventsData} {...this.props} /> 
-            : <Text style={{ marginTop: 100 }}> Nothing </Text>
-          }
-        </View>
-      )
+    return (
+      <View>
+        {this.state.type !== TYPE_EVENT.MyEvent && <SearchBar />}
+        {this.state.eventsData.length !== 0
+          ? <Events eventsData={this.state.eventsData} {...this.props} />
+          : <Text style={{ marginTop: 100 }}> Nothing </Text>
+        }
+      </View>
+    )
 
   }
 }
 
 mapStateToProps = (state) => {
   return {
-    query: state.search.query
+    query: state.search.query,
+    isLogin: state.appGlobalState.isLogin
   }
 }
 
-export default connect (mapStateToProps)(EventsAround)
+export default connect(mapStateToProps)(EventsAround)
