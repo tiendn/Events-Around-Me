@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet} from 'react-native'
 import { getFbRequest, postFbRequest } from '../providers/FBRequest.js';
 import { Events } from '../components/Events';
 import SearchBar from '../components/SearchBar';
@@ -9,7 +9,8 @@ import { connect } from 'react-redux';
  */
 const TYPE_EVENT = {
   MyEvent: 1,
-  Popular: 2
+  Popular: 2,
+  Location: 3
 }
 
 const latitude = 0;
@@ -32,7 +33,7 @@ class EventsAround extends React.Component {
     })
   }
   componentDidMount() {
-    // this.switchEvent();
+    this.switchEvent();
   }
   componentWillReceiveProps(props) {
     console.log(props)
@@ -42,21 +43,65 @@ class EventsAround extends React.Component {
     })
     this.switchEvent(props);
   }
+  getRequest(type,query){
+    let obj = {
+      fields: {
+        'string' : fields
+      },
+      type: {
+        'string': 'event'
+      },
+      q: {
+        'string': 'query'
+      }
+    };
+    
+  }
+  getEventSearchRequest(keyword){
+    let request = {
+      fields: {
+        'string' : fields
+      },
+      type: {
+        'string': 'event'
+      },
+      q: {
+        'string': keyword
+      }
+    };
+    // if (latitude !== '') {
+    //   request.latitude = {
+    //     'string' : latitude
+    //   };
+    //   request.longtitute = {
+    //     'string' : longtitute
+    //   }
+    // }
+    return request;
+  }
   switchEvent(props: ?Object = { query: 'Hanoi' }) {
     console.log(props);
     let keyword = props.query;
-    let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
-    let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
+    // Should config parameter before pass to provider fn
+    // let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
+    // let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
     let pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
+    // Bay gio se la tach ra lam 3 loai request, pho bien va dia diem va ban than
+    // UI: Loc vi tri ngay tren thanh navigator
+    // 
+
     switch (this.state.type) {
       case TYPE_EVENT.Popular:
-        this._getEvents(pathEventsSearch);
+        this._getEvents('search?',this.getEventSearchRequest(keyword));
         break;
       case TYPE_EVENT.MyEvent:
-        this._getEvents(pathMyEvents);
+        this._getEvents(pathMyEvents,null);
         break;
+      // case TYPE_EVENT.Location:
+      //   this._getEvents('search?',this.getEventSearchRequest(keyword,latitude,longtitude))
+      //   break;
       default:
-        this._getEvents(pathEventsSearch);
+        this._getEvents('search?',this.getEventSearchRequest(keyword));
     }
   }
   /**
@@ -125,7 +170,7 @@ class EventsAround extends React.Component {
     console.log(responseData)
 
     let data = this.sortDataByNearTime(responseData); // Sort data by near time
-
+    // GlobalVars here to make an option for user
     data = this.checkExpired(data); // If not my events, filter events has expired
 
     data = data.map(item => this.formatTime(item)); // Format time
@@ -139,8 +184,8 @@ class EventsAround extends React.Component {
    * Get GraphAPI from service
    * @param {*} path 
    */
-  _getEvents(path) {
-    getFbRequest(path, (error, responseData) => {
+  _getEvents(path , request) {
+    getFbRequest(path, request, (error, responseData) => {
       // console.log('Success fetching ddata: ', responseData);
       if (error === null)
         this._getData(responseData);
@@ -170,5 +215,13 @@ mapStateToProps = (state) => {
     isLogin: state.appGlobalState.isLogin
   }
 }
-
+const styles = StyleSheet.create({
+  activityIndicator: {
+    position : 'absolute',
+    justifyContent: 'center',
+    top: '50%',
+    alignSelf: 'center',
+    alignItems: 'center'
+  },
+})
 export default connect(mapStateToProps)(EventsAround)

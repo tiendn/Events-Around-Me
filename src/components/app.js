@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Navigator, StyleSheet, TouchableOpacity, Platform, View, StatusBar, Text
+  Navigator, StyleSheet, TouchableOpacity, Platform, View, StatusBar, Text, NavigatorIOS
 } from 'react-native';
 import { AccessToken } from 'react-native-fbsdk';
 import { connect } from 'react-redux';
@@ -35,7 +35,7 @@ class App extends Component {
   //     passProps: { myProp: 'genius' },
   //   });
   // }
-  /*render() {
+  render() {
     return (
       <NavigatorIOS
         ref='nav'
@@ -50,8 +50,8 @@ class App extends Component {
       />
 
     );
-  }*/
-  render() {
+  }
+  /*render() {
     
     const root = { title: "Events Around Me", component: Tabs };
     
@@ -84,7 +84,7 @@ class App extends Component {
           </TouchableOpacity>)
       },
       Title(route, navigator, index, navState) {
-        return <Text style={styles.navContent}>{route.title}</Text>
+        return <Text numberOfLines = {1} style={[styles.navContent,styles.navTitle]}>{route.title}</Text>
       }
     };
     return (
@@ -122,7 +122,7 @@ class App extends Component {
         }
       />
     );
-  }
+  }*/
 }
 const styles = StyleSheet.create({
   container: {
@@ -138,6 +138,10 @@ const styles = StyleSheet.create({
   navContent: {
     color: '#ffffff',
     fontSize: 16,
+    
+  },
+  navTitle: {
+    width: '60%'
   },
   statusBar: {
     height: 20

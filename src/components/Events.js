@@ -25,11 +25,11 @@ export class Events extends React.Component {
     console.log(props)
     this.onEventClick = this.onEventClick.bind(this);
     this.state = ({
-      dataSource: []
+      dataSource: [],
     })
   }
   componentDidMount() {
-    let eventsData = this.props.eventsData
+    let eventsData = this.props.eventsData;
     if (eventsData.length > 0)
       this.setState({
         dataSource: ds.cloneWithRows(eventsData),
@@ -85,7 +85,7 @@ export class Events extends React.Component {
 
   render() {
     return (
-      <View >
+      <View style = {styles.container}>
         {this.state.dataSource.length !== 0
           ? <ListView
             dataSource={this.state.dataSource}
@@ -102,7 +102,9 @@ export class Events extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  
+  container:{
+    paddingBottom: 30
+  },
   body: {
     backgroundColor: '#dddddd'
   },
@@ -141,6 +143,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row'
   },
+  
   // searchInput:{
   //   height: 40,
   //   borderWidth: 0.5,
