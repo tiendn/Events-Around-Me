@@ -46,7 +46,8 @@ class App extends Component {
           rightButtonTitle: 'Search',
           onRightButtonPress: () => this._handleNavigationRequest(),
         }}
-        style={{ flex: 1 }}
+        style={{ flex: 1, }}
+        barTintColor='#ffffcc'
       />
 
     );

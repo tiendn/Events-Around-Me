@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderColor: 'gray',
     borderWidth: 1,
-    borderRadius: 5
+    borderRadius: 5,
   },
   rsvpBtnItem: {
 

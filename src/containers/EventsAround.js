@@ -36,28 +36,14 @@ class EventsAround extends React.Component {
     this.switchEvent();
   }
   componentWillReceiveProps(props) {
-    console.log(props)
-    this.setState({
-      type: props.type,
-      isLogin: props.isLogin
-    })
-    this.switchEvent(props);
-  }
-  getRequest(type,query){
-    let obj = {
-      fields: {
-        'string' : fields
-      },
-      type: {
-        'string': 'event'
-      },
-      q: {
-        'string': 'query'
-      }
-    };
-    
+    // console.log(props)
+    // this.setState({
+    //   type: props.type,
+    // })
+    // this.switchEvent(props);
   }
   getEventSearchRequest(keyword){
+    console.log(keyword)
     let request = {
       fields: {
         'string' : fields
@@ -197,7 +183,7 @@ class EventsAround extends React.Component {
    */
   render() {
     return (
-      <View>
+      <View style = {{paddingBottom: 100}}>
         {this.state.type !== TYPE_EVENT.MyEvent && <SearchBar />}
         {this.state.eventsData.length !== 0
           ? <Events eventsData={this.state.eventsData} {...this.props} />
@@ -212,7 +198,6 @@ class EventsAround extends React.Component {
 mapStateToProps = (state) => {
   return {
     query: state.search.query,
-    isLogin: state.appGlobalState.isLogin
   }
 }
 const styles = StyleSheet.create({

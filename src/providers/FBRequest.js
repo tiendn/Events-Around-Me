@@ -3,7 +3,7 @@ const {
   GraphRequest,
   GraphRequestManager,
 } = FBSDK;
-const fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
+// const fields = 'id,name,place,start_time,end_time,rsvp_status,cover,category,attending_count,description,ticket_uri';
 // let pathLocationSearch = 'search?q=' + keyword + '&type=event&center=' + latitude + ',' + longtitude + '&distance=10000&fields=' + fields + '&limit=50';
 // let pathEventsSearch = 'search?q=' + keyword + '&type=event&fields=' + fields + '&limit=50';
 // let pathMyEvents = 'me/events?fields=' + fields + '&limit=50';
