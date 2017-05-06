@@ -1,24 +1,43 @@
-import React from 'react';
-import {LOGOUT, LOGIN} from '../common/constants';
+import {
+  LOGIN ,
+  LOGOUT, 
+  TOGGLE_MENU,
+  ME,
+  SETTINGS,
+  EVENTS_SEARCH,
+  OPEN_MODULE
+} from '../commons/constants';
 const initialState = {
   isLogin : false,
+  eventType: ME,
+  isMenuOpened: false
 }
 
-export default SearchBar = (state = initialState ,action) => {
-      // console.log(action);
-  
-  switch (action.type){
-    case LOGOUT:
+export default (state = initialState, action) => {
+  switch(action.type){
+    case TOGGLE_MENU:
+      // console.log("current state", state)
+      return {
+        ...state, 
+        isMenuOpened: !state.isMenuOpened
+      }
+    case OPEN_MODULE: 
       return {
         ...state,
-        isLogin: false
-      }
+        eventType: action.eventType,
+        isMenuOpened: false
+      }  
     case LOGIN:
       return {
         ...state,
         isLogin: true
       }
-    default:
+    case LOGOUT:
+      return {
+        ...state,
+        isLogin: false
+      }  
+    default: 
       return state;
   }
 }
