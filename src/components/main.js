@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, PanResponder, Platform } from 'react-native';
-// import { toggleMenu, successPush } from '../actions/action.home';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import { toggleMenu } from '../actions/appActions';
-class Main extends Component {
+import { ME, SETTINGS, EVENTS_SEARCH } from '../commons/constants';
+import EventsAround from '../containers/EventsAround';
+import Settings from '../containers/Settings';
+
+  class Main extends Component {
     constructor(props) {
       super(props);
-      // console.log(props)
+      // PanRes
       this._panResponder = PanResponder.create({
         onMoveShouldSetPanResponder: (e, gestureState) => this._handleMoveShouldSetPanResponder(e, gestureState),
         onPanResponderMove: (e, gestureState) => this._handlePanResponderMove(e, gestureState),
@@ -40,7 +42,7 @@ class Main extends Component {
       else if (Platform.OS === 'ios') {
         if (x0 <= 30 && moveX - x0 >= 20 && Math.abs(moveY - y0) <= 20
           || (moveX === 0 && moveY === 0)) {
-            // this.props.toggleMenu();
+          // this.props.toggleMenu();
           this.props.dispatch(toggleMenu());
         }
       }
@@ -54,6 +56,16 @@ class Main extends Component {
         // this.props.toggleMenu();
         this.props.dispatch(toggleMenu());
       }
+    }
+    _renderPage() {
+      if (this.props.eventType === ME || this.props.eventType === EVENTS_SEARCH)
+        return (
+          <EventsAround navigator={this.props.navigator} />
+        )
+      else
+        return (
+          <Settings navigator={this.props.navigator} />
+        )
     }
     _renderViewAbsolute() {
       if (this.props.isMenuOpened) {
@@ -70,6 +82,7 @@ class Main extends Component {
           navigator={this.props.navigator}
         >
           {/*Events*/}
+          {this._renderPage()}
           {this._renderViewAbsolute()}
         </View>
       );
@@ -101,7 +114,8 @@ const mapDispatchToProps = dispatch => {
 }
 const mapStateToProps = (state) => {
   return {
-    isMenuOpened: state.appGlobalState.isMenuOpened
+    isMenuOpened: state.appGlobalState.isMenuOpened,
+    eventType: state.appGlobalState.eventType
   }
 }
 // export default connect(mapStateToProps,mapDispatchToProps)(Main);

@@ -11,3 +11,11 @@ export const TOGGLE_MENU = 'TOGGLE_MENU';
 export const SORT_BY_EXPIRED = 'SORT_BY_EXPIRED';
 export const SORT_BY_LOCATION = 'SORT_BY_LOCATION';
 export const SORT_BY_POPULAR = 'SORT_BY_POPULAR';
+export const SFETCH_DATA = {
+    SUCCESS : 'SUCCESS',
+    FAILED : 'FAILED'
+}
+export const MFETCH_DATA = {
+    SUCCESS : 'SUCCESS',
+    FAILED : 'FAILED'
+}

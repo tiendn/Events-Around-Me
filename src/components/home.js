@@ -1,11 +1,22 @@
 import React from 'react';
-import { Animated, Dimensions, View, Navigator, StyleSheet,ActionSheetIOS, Text, TouchableOpacity, Platform, StatusBar } from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  View,
+  Navigator,
+  StyleSheet,
+  ActionSheetIOS,
+  Text,
+  TouchableOpacity,
+  Platform,
+  StatusBar
+} from 'react-native';
 import { connect } from 'react-redux';
 import { AccessToken } from 'react-native-fbsdk';
 import { bindActionCreators } from 'redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { login, toggleMenu } from '../actions/appActions';
-import {ME, SETTINGS, EVENTS_SEARCH } from '../commons/constants';
+import { ME, SETTINGS, EVENTS_SEARCH } from '../commons/constants';
 import Menu from './menu';
 import Main from './main'
 
@@ -34,13 +45,16 @@ class Home extends React.Component {
     });
 
   }
+  componentWillMount() {
+    this.checkLogin();
+  }
   checkLogin() {
     let $scope = this;
     // Check this app is login to facebook yett?
     AccessToken.getCurrentAccessToken().then(accessToken => {
       if (accessToken === null) return false;
       else {
-        $scope.props.login();
+        $scope.props.dispatch(login());
       }
     }, reject => console.log(reject));
     return true;
@@ -96,35 +110,43 @@ class Home extends React.Component {
       ).start();
     }
   }
-  openFilter(){
+  openFilter() {
     ActionSheetIOS.showActionSheetWithOptions({
-        options: BUTTONS,
-        cancelButtonIndex: CANCEL_INDEX,
-        destructiveButtonIndex: DESTRUCTIVE_INDEX,
-        title: "Filter",
-        message: "Choose what event you need."
-      },
-        (buttonIndex) => {
-          alert(BUTTONS[buttonIndex]);
-        });
+      options: BUTTONS,
+      cancelButtonIndex: CANCEL_INDEX,
+      destructiveButtonIndex: DESTRUCTIVE_INDEX,
+      title: "Filter",
+      message: "Choose what event you need."
+    },
+      (buttonIndex) => {
+        alert(BUTTONS[buttonIndex]);
+      });
+  }
+  renderScene(route, navigator) {
+    return React.createElement(route.component, { ...this.props, ...route.passProps, route, navigator })
   }
   render() {
     this.setAnimation();
-    let title = this.props.eventType === ME 
-                ? 'My Events'
-                : this.props.eventType === EVENTS_SEARCH 
-                  ? 'Events Around Me'
-                  : 'Settings ';
+    let title = this.props.eventType === ME
+      ? 'My Events'
+      : this.props.eventType === EVENTS_SEARCH
+        ? 'Events Around Me'
+        : 'Settings ';
     const root = { title: "My Events", component: Main };
     let $scope = this;
-    var NavigationBarRouteMapper = {
+    let NavigationBarRouteMapper = {
       LeftButton(route, navigator, index, navState) {
         if (index > 0) {
           return (
             <TouchableOpacity
               underlayColor="transparent"
               onPress={() => { if (index > 0) { navigator.pop(); } }}>
-              <Text style={StyleSheet.flatten([styles.navContent, styles.navButton])}>Back</Text>
+              <Icon
+                name="ios-arrow-back"
+                size={20}
+                color="white"
+                style={styles.navButton}
+              />
             </TouchableOpacity>)
         }
         else {
@@ -133,35 +155,35 @@ class Home extends React.Component {
               underlayColor="transparent"
               onPress={() => $scope.props.dispatch(toggleMenu())}
             >
-              <Icon 
-                name="list" 
-                size = {20}
-                color = "white"
-                style = {styles.menuIco} 
+              <Icon
+                name="ios-menu"
+                size={20}
+                color="white"
+                style={styles.menuIco}
               />
             </TouchableOpacity>
-            
+
           )
         }
       },
       RightButton(route, navigator, index, navState) {
         if ($scope.props.eventType === EVENTS_SEARCH) return (
           <TouchableOpacity
-              onPress = {() => $scope.openFilter()}
-              underlayColor="transparent"
+            onPress={() => $scope.openFilter()}
+            underlayColor="transparent"
           >
-            <Icon 
-              name="filter" 
-              size = {20}
-              color = "white"
-              style = {styles.filterIco} 
+            <Icon
+              name="ios-funnel-outline"
+              size={20}
+              color="white"
+              style={styles.filterIco}
             />
           </TouchableOpacity>
 
         )
       },
       Title(route, navigator, index, navState) {
-        if (index == 0) 
+        if (index == 0)
           return <Text numberOfLines={1} style={[styles.navContent, styles.navTitle]}>{title}</Text>
 
         return <Text numberOfLines={1} style={[styles.navContent, styles.navTitle]}>{route.title}</Text>
@@ -169,6 +191,7 @@ class Home extends React.Component {
     };
     return (
       <View style={{ flex: 1 }} >
+
         <Animated.View style={[styles.menu, { opacity: this.state.fadeAnim.value }]} >
           <Menu />
         </Animated.View>
@@ -185,11 +208,11 @@ class Home extends React.Component {
           <Navigator
             ref='nav'
             initialRoute={root}
-            barTintColor='#ffffcc'
             renderScene={(route, navigator) => {
               let RouteComponent = route.component;
               return (
                 <View style={styles.container}>
+                  <StatusBar barStyle='light-content' />
                   <RouteComponent navigator={navigator} {...route.props} />
                 </View>
               )
@@ -230,11 +253,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   navigator: {
-    backgroundColor: '#B3D749',
+    backgroundColor: 'rgb(53,80,135)',
     height: 50
   },
   navButton: {
-    paddingLeft: 10
+    paddingLeft: 10,
   },
   navContent: {
     color: '#ffffff',
@@ -262,7 +285,7 @@ const styles = StyleSheet.create({
     marginRight: '15%'
   },
   menuIco: {
-    marginLeft: '15%'  
+    marginLeft: '15%'
   }
 });
 

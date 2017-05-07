@@ -17,12 +17,12 @@
     "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
-    "@types/react-native": "^0.42.14",
-    "babel-jest": "18.0.0",
+    "@types/react-native": "^0.43.7",
+    "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
-    "jest": "18.1.0",
+    "jest": "19.0.2",
     "react-test-renderer": "15.4.2",
-    "standard": "^10.0.0"
+    "redux-devtools": "^3.4.0"
   },
   "jest": {
     "preset": "react-native"

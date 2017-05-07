@@ -1,18 +1,17 @@
 import { Text, View, StyleSheet } from 'react-native';
 import React from 'react';
-export default CardContent = (rowData) => {
+export default CardContent = (item) => {
   // Datetime
-  const data = rowData;
   return (
     <View style={styles.cardContent}>
       <Text style={[styles.startTime, styles.text]}>
-        {data.start_time}
+        {item.start_time}
     </Text>
       <Text numberOfLines={1} style={[styles.title, styles.text]} >
-        {data.name}
+        {item.name}
     </Text>
       <Text style={[styles.place, styles.text]} >
-        {data.place == undefined ? '' : data.place.name}
+        {item.place == undefined ? '' : item.place.name}
     </Text>
     </View>
   )
