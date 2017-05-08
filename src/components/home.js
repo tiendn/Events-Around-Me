@@ -21,7 +21,7 @@ import Menu from './menu';
 import Main from './main'
 
 const WIDTH = Dimensions.get('window').width;
-const timeAnimateDuration = 400;
+const timeAnimateDuration = 500;
 const BUTTONS = [
   'Sort by expired',
   'Sort by location',

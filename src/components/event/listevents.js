@@ -28,7 +28,7 @@ export default class ListEvents extends React.Component {
     //   this.setState({
     //   })
   }
-  
+
   onEventClick(event, item) {
     event.preventDefault();
     this.props.navigator.push({
@@ -53,27 +53,31 @@ export default class ListEvents extends React.Component {
         <View style={styles.card} key={item.id} >
           <TouchableOpacity onPress={(event) => this.onEventClick(event, item)} activeOpacity={0.7} >
             {/*Image*/}
-            {/*<Image
+            <Image
               style={styles.image}
               source={{ uri: cover.source }}
-              defaultSource={require('./img/not-available.png')}
-            />*/}
+            />
             <CardContent {...item} />
-            {/*<CardFooter {...item} />*/}
+            <CardFooter {...item} />
           </TouchableOpacity>
         </View>
       )
     }
   }
-
+  _keyExtractor = (item,index) => item.id
   render() {
     return (
-      <View style = {styles.container}>
-        {this.props.data.length !== 0 &&
-           <FlatList
+      <View style={styles.container}>
+        {this.props.data.length > 0 &&
+          <FlatList
             data={this.props.data}
-            renderItem={({item}) => this._renderItem(item)}
+            renderItem={({ item }) => this._renderItem(item)}
             style={styles.body}
+            extraData={this.state}
+            keyExtractor={this._keyExtractor}
+            contentContainerStyle={styles.listEvents}
+            onEndReachedThreshold = {0.8}
+            onEndReached = {() => alert("Load more")} 
           />
         }
       </View>
@@ -84,8 +88,12 @@ export default class ListEvents extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container:{
-    paddingBottom: 30
+  container: {
+    flex: 1,
+    marginTop: 50
+  },
+  listEvents: {
+
   },
   body: {
     backgroundColor: '#dddddd'

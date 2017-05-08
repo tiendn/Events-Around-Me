@@ -1,16 +1,30 @@
-import { ME_DATA, EVENTS_SEARCH_DATA, GET_QUERY_SEARCH, SFETCH_DATA, MFETCH_DATA} from '../commons/constants';
+import {
+  GET_QUERY_SEARCH,
+  SFETCH_DATA_SUCCESS,
+  SFETCH_DATA_FAILED,
+  MFETCH_DATA_SUCCESS,
+  MFETCH_DATA_FAILED,
+  FETCH_DATA
+} from '../commons/constants';
 const initialState = {
-  query : '',
-  spayload : [], // search
-  mpayload : [] // me
+  query: '',
+  isLoadDone: false,
+  spayload: [], // search
+  mpayload: [] // me
 }
 
 export default (state = initialState, action) => {
-  switch(action.type){
+  switch (action.type) {
     case GET_QUERY_SEARCH:
       return {
-        ...state, 
+        ...state,
         query: action.query
+      }
+    case FETCH_DATA:
+      console.log(action)
+      return {
+        ...state,
+        isLoadDone: false
       }
     // case ME_DATA:
     //   return {
@@ -22,18 +36,33 @@ export default (state = initialState, action) => {
     //     ...state,
     //     payload: action.payload
     //   }
-    case MFETCH_DATA.SUCCESS:
+    case MFETCH_DATA_SUCCESS:
       console.log(action)
       return {
         ...state,
-        mpayload: action.payload
+        mpayload: action.payload,
+        isLoadDone: true
       }
-    case SFETCH_DATA.SUCCESS:
+    case MFETCH_DATA_FAILED:
+      console.log(action)
       return {
         ...state,
-        spayload: action.payload
+        isLoadDone: true
       }
-    default: 
+    case SFETCH_DATA_SUCCESS:
+      console.log(action)
+      return {
+        ...state,
+        spayload: action.payload,
+        isLoadDone: true
+      }
+    case SFETCH_DATA_FAILED:
+      console.log(action)
+      return {
+        ...state,
+        isLoadDone: true
+      }
+    default:
       return state;
   }
 }
